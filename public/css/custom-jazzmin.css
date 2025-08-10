@@ -1,0 +1,73 @@
+/* Navbar */
+.navbar, .main-header {
+    background-color: #bd686b !important;
+    color: #fff !important;
+}
+
+/* Sidebar */
+.main-sidebar {
+    background-color: #bd686b !important;
+    color: #fff !important;
+}
+
+/* Body, Painéis e Footer */
+.content-wrapper, .content, .card, .main-footer {
+    background-color: #bd686b !important;
+    color: #fff !important;
+}
+
+/* Títulos e textos */
+body, h1, h2, h3, h4, h5, h6, .brand-text, .nav-link, .content-header h1 {
+    color: #fff !important;
+}
+
+/* Links e ícones */
+a, .nav-link, .nav-icon {
+    color: #fff !important;
+}
+
+/* Estilização personalizada para botões do admin */
+.btn, .btn-sm, .btn-success, .btn-primary, .btn-info, .btn-warning, .btn-danger {
+    background-color: #fff !important;
+    color: #bd686b !important;
+    border: 1px solid #bd686b !important;
+    padding: 6px 12px !important;
+    font-size: 14px !important;
+    border-radius: 4px !important;
+    box-shadow: none !important;
+    transition: all 0.3s ease-in-out;
+}
+
+.btn:hover {
+    background-color: #bd686b !important;
+    color: #fff !important;
+    border: 1px solid #fff !important;
+}
+
+/* Estilização do item ativo no menu lateral */
+.nav-sidebar .nav-link.active {
+    background-color: #fff !important;
+    color: #bd686b !important;
+    border-radius: 4px !important;
+}
+
+/* Ícone dentro do item ativo */
+.nav-sidebar .nav-link.active .nav-icon {
+    color: #bd686b !important;
+}
+
+/* Texto no painel de ações recentes */
+.timeline .timeline-item {
+    color: #bd686b !important;
+}
+
+/* Estiliza o texto da ação (como "Alterado Tratamento.") */
+.timeline .timeline-body,
+.timeline .timeline-header {
+    color: #bd686b !important;
+}
+
+/* Estiliza o tempo (ex: "1 semana, 1 dia atrás") */
+.timeline .time {
+    color: #bd686b !important;
+}

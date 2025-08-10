@@ -1,0 +1,853 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+	<head>
+
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="description" content="Clínica das Árabia - Estética Avançada">
+		<meta name="keywords" content="Dra. Naime Farhat">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+
+  		<!-- SITE TITLE -->
+		<title>Clínica Das Árabia - Tratamentos</title>
+
+		<!-- FAVICON AND TOUCH ICONS -->
+		<link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+		<link rel="icon" href="favicon.ico" type="image/x-icon">
+		<link rel="apple-touch-icon" sizes="152x152" href="{%static 'images/apple-touch-icon-152x152.png'%}">
+		<link rel="apple-touch-icon" sizes="120x120" href="{%static 'images/apple-touch-icon-120x120.png'%}">
+		<link rel="apple-touch-icon" sizes="76x76" href="{%static 'images/apple-touch-icon-76x76.png'%}">
+		<link rel="apple-touch-icon" href="{%static 'images/apple-touch-icon.png'%}">
+		<link rel="icon" href="{%static 'images/apple-touch-icon.png'%}" type="image/x-icon">
+
+		<!-- GOOGLE FONTS -->
+		<link href="https://fonts.googleapis.com/css2?family=Alex+Brush&display=swap" rel="stylesheet">
+		<link href="https://fonts.googleapis.com/css2?family=Vollkorn:wght@400;500;600;700&display=swap" rel="stylesheet">
+		<link href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+		<!-- BOOTSTRAP CSS -->
+		<link href="{%static 'css/bootstrap.min.css'%}" rel="stylesheet">
+
+		<!-- FONT ICONS -->
+		<link href="{%static 'css/flaticon.css'%}" rel="stylesheet">
+
+		<!-- PLUGINS STYLESHEET -->
+		<link href="{%static 'css/menu.css'%}" rel="stylesheet">
+		<link id="effect" href="{%static 'css/fade-down.css'%}" media="all" rel="stylesheet">
+		<link href="{%static 'css/magnific-popup.css'%}" rel="stylesheet">
+		<link href="{%static 'css/owl.carousel.min.css'%}" rel="stylesheet">
+		<link href="{%static 'css/owl.theme.default.min.css'%}" rel="stylesheet">
+		<link href="{%static 'css/datetimepicker.min.css'%}" rel="stylesheet">
+		<link href="{%static 'css/lunar.css'%}" rel="stylesheet">
+
+		<!-- ON SCROLL ANIMATION -->
+		<link href="{%static 'css/animate.css'%}" rel="stylesheet">
+
+		<!-- TEMPLATE CSS -->
+		<link href="{%static 'css/style.css'%}" rel="stylesheet">
+
+		<!-- RESPONSIVE CSS -->
+		<link href="{%static 'css/responsive.css'%}" rel="stylesheet">
+
+	</head>
+
+
+
+	<body>
+
+
+
+
+		<!-- PRELOADER SPINNER
+		============================================= -->
+		<div id="loading" class="loading-black">
+			<div id="loading-center"><span class="loader"></span></div>
+		</div>
+
+
+
+
+		<!-- STYLE SWITCHER
+		============================================= -->
+		<div id="stlChanger">
+			<div class="blockChanger bgChanger">
+            	<a href="#" class="chBut ico-35">
+            		<p class="switch">
+            			<span class="drk-mode flaticon-moon"></span>
+            			<span class="lgt-mode flaticon-sum"></span>
+            		</p>
+            	</a>
+			</div>
+		</div>	  <!-- END SWITCHER -->
+
+
+
+
+		<!-- PAGE CONTENT
+		============================================= -->
+		<div id="page" class="page">
+
+
+
+
+			<!-- HEADER
+			============================================= -->
+			<header id="header" class="tra-menu navbar-light white-scroll">
+				<div class="header-wrapper">
+
+
+					<!-- MOBILE HEADER -->
+				    <div class="wsmobileheader clearfix">
+				    	<span class="smllogo">
+				    		<a href="{% url 'index' %}" class="logo-black"><img src="{%static 'images/logo-black.png'%}" alt="mobile-logo"></a>
+				    		<a href="{% url 'index' %}" class="logo-white"><img src="{%static 'images/logo-white.png'%}" alt="mobile-logo"></a>
+				    	</span>
+				    	<a id="wsnavtoggle" class="wsanimated-arrow"><span></span></a>
+				 	</div>
+
+
+				 	<!-- NAVIGATION MENU -->
+				  	<div class="wsmainfull menu clearfix">
+	    				<div class="wsmainwp clearfix">
+
+
+	    					<!-- HEADER BLACK LOGO -->
+	    					<div class="desktoplogo">
+	    						<a href="{% url 'index' %}" class="logo-black"><img src="{%static 'images/logo-black.png'%}" alt="logo"></a>
+	    					</div>
+
+
+	    					<!-- HEADER WHITE LOGO -->
+	    					<div class="desktoplogo">
+	    						<a href="{% url 'index' %}" class="logo-white"><img src="{%static 'images/logo-white.png'%}" alt="logo"></a>
+	    					</div>
+
+
+	    					<!-- MAIN MENU -->
+	      					<nav class="wsmenu clearfix">
+	        					<ul class="wsmenu-list">
+
+
+	        						<!-- DROPDOWN SUB MENU -->
+						          	<li aria-haspopup="true"><a href="{% url 'index' %}" class="h-link">Inicio</a>
+								    </li>
+
+
+								    <!-- SIMPLE NAVIGATION LINK -->
+							    	<li class="nl-simple" aria-haspopup="true"><a href="{% url 'tratamentos' %}" class="h-link">Tratamentos</a></li>
+
+
+								    <!-- SIGN UP BUTTON -->
+								    <li class="nl-simple" aria-haspopup="true">
+								    	<a href="{% url 'agendamento' %}" class="btn btn--tra-white hover--white last-link">Agendamento Online</a>
+								    </li>
+
+
+	        					</ul>
+	        				</nav>	<!-- END MAIN MENU -->
+
+
+	    				</div>
+	    			</div>	<!-- END NAVIGATION MENU -->
+
+
+				</div>     <!-- End header-wrapper -->
+			</header>	<!-- END HEADER -->
+
+
+
+
+			<!-- INNER PAGE HERO
+			============================================= -->
+			<section id="pricing-page-1" class="inner-page-hero division">
+				<div class="container">
+					<div class="row">
+						<div class="col">
+							<div class="page-hero-txt color--white">
+								<h2>Tratamentos Estéticos</h2>
+								<p>É hora de dar um pouco de amor ao seu corpo</p>
+							</div>
+						</div>
+					</div>
+				</div>	   <!-- End container -->
+			</section>	<!-- END INNER PAGE HERO -->
+
+
+
+
+			<!-- PRICING-5
+			============================================= -->
+			<div class="pt-8 pricing-5 pricing-section division">
+				<div class="container">
+
+
+					<!-- SESSÃO DE TRATAENTOS -->
+					<div class="pricing-5-wrapper">
+						<div class="row">
+
+
+							<!-- TABELA DE TRATAMENTOS -->
+							<div class="col-lg-6">
+								<div class="pricing-5-table left-column wow fadeInUp">
+
+
+									<!-- LISTA DE TRATAMENTOS -->
+									<div class="pricing-5-category mb-4">
+										<h3>Tratamentos Faciais</h3>
+									</div>
+
+
+									<!-- TRATAMENTOS FACIAIS -->
+									<ul class="pricing-list">
+										{% for tratamento in tratamentos %}
+											{% if tratamento.tipoTratamento == "Facial" %}
+												<!-- ITENS -->
+												<li class="pricing-5-item">
+													<div class="detail-price">
+														<div class="price-name"><p>{{ tratamento.nomeTratamento }}</p></div>
+													</div>
+													<!-- DESCRIÇÃO -->
+													<div class="price-txt">
+														<p>{{ tratamento.descricao }}</p>
+													</div>
+												</li>
+											{% endif %}
+										{% endfor %}
+									</ul>
+									<!-- FIM DO TRATAMENTO FACIAL -->
+
+
+									<div class="pricing-5-category mt-4 mb-4">
+										<h3>Tratamentos para os Glúteos</h3>
+									</div>
+
+									<!-- LISTA DE TRATAMENTOS PARA GLUTEOS -->
+									<ul class="pricing-list">
+										{% for tratamento in tratamentos %}
+											{% if tratamento.tipoTratamento == "Glúteos" %}
+												<!-- PRICING ITEM #1 -->
+												<li class="pricing-5-item">
+													<div class="detail-price">
+														<div class="price-name"><p>{{ tratamento.nomeTratamento }}</p></div>
+													</div>
+													<!-- Description -->
+													<div class="price-txt">
+														<p>{{ tratamento.descricao }}</p>
+													</div>
+												</li>
+											{% endif %}
+										{% endfor %}
+									</ul>
+									<!-- FIM DO TRATAMENTO PARA GLUTEOS -->
+								</div>
+							</div>
+							<!-- FIM DA PRIMEIRA TABELA DE TRATAMENTOS -->
+
+							<!-- SEGUNDA TABELA DE TRATAMENTOS -->
+							<div class="col-lg-6">
+								<div class="pricing-5-table right-column wow fadeInUp">
+
+
+									<!-- PRICING LIST CATEGORY -->
+									<div class="pricing-5-category p5-top mb-4">
+										<h3>Tratamentos para os Lábios</h3>
+									</div>
+
+
+									<!-- TRATAMENTOS PARA LABIOS -->
+									<ul class="pricing-list">
+										{% for tratamento in tratamentos %}
+											{% if tratamento.tipoTratamento == "Labial" %}
+												<!-- ITENS -->
+												<li class="pricing-5-item">
+													<div class="detail-price">
+														<div class="price-name"><p>{{ tratamento.nomeTratamento }}</p></div>
+													</div>
+													<!-- DESCRIÇÃO -->
+													<div class="price-txt">
+														<p>{{ tratamento.descricao }}</p>
+													</div>
+												</li>
+											{% endif %}
+										{% endfor %}
+									</ul>
+									<!-- FIM DO TRATAMENTO PARA LABIOS -->
+
+
+									<!-- PRICING LIST CATEGORY -->
+									<div class="pricing-5-category mt-4 mb-4">
+										<h3>Tratamentos Corporais</h3>
+									</div>
+
+
+									<!-- TRATAMENTOS CORPORAIS -->
+									<ul class="pricing-list">
+										{% for tratamento in tratamentos %}
+											{% if tratamento.tipoTratamento == "Corporal" %}
+												<!-- ITENS -->
+												<li class="pricing-5-item">
+													<div class="detail-price">
+														<div class="price-name"><p>{{ tratamento.nomeTratamento }}</p></div>
+													</div>
+													<!-- DESCRIÇÃO -->
+													<div class="price-txt">
+														<p>{{ tratamento.descricao }}</p>
+													</div>
+												</li>
+											{% endif %}
+										{% endfor %}
+									</ul>
+									<!-- FIM DO TRATAMENTO CORPORAIS -->
+								</div>
+							</div>
+							<!-- FIM DA SEGUNDA TABELA DE TRATAMENTOS -->
+
+
+						</div>
+					</div>
+					<!-- FIM DA SESSÃO DE TRATAMENTOS -->
+
+
+					<!-- BUTTON -->
+			 		<div class="row">
+			 			<div class="col">
+			 				<div class="more-btn mt-6">
+								<a href="{% url 'agendamento' %}" class="btn btn--tra-black hover--black">Agendamento Online</a>
+							</div>
+						</div>
+					</div>	<!-- END BUTTON -->
+
+
+				</div>  <!-- End container -->
+			</div>	<!-- PRICING-5  -->
+
+
+
+
+			<!-- GALLERY-4
+			============================================= -->
+			<div id="gallery-4" class="py-8 gallery-section division">
+				<div class="container-fluid">
+
+
+					<!-- GALLERY-4 WRAPPER -->
+					<div class="gallery-4-wrapper">
+						<div class="row">
+
+
+							<!-- IMAGE #1 -->
+							<div class="col-md-6 col-lg-2">
+								<div id="img-4-1" class="gallery-image">
+							  		<div class="hover-overlay">
+
+							  			<!-- Image -->
+										<img class="img-fluid" src="{%static 'images/woman_04.jpg' %}" alt="gallery-image">
+										<div class="item-overlay"></div>
+
+										<!-- Image Zoom -->
+										<div class="image-data">
+											<div class="gallery-link ico-30 color--white">
+												<a class="image-link" href="{%static 'images/woman_04.jpg' %}">
+													<span class="flaticon-visibility"></span>
+												</a>
+											</div>
+										</div>
+
+							  		</div>
+								</div>
+							</div>
+
+
+							<!-- IMAGE #2 -->
+							<div class="col-md-6 col-lg-5">
+								<div id="img-4-2" class="gallery-image">
+							  		<div class="hover-overlay">
+
+							  			<!-- Image -->
+										<img class="img-fluid" src=" {%static 'images/woman_01_1.jpg' %}" alt="gallery-image">
+										<div class="item-overlay"></div>
+
+										<!-- Image Zoom -->
+										<div class="image-data">
+											<div class="gallery-link ico-40 color--white">
+												<a class="image-link" href="{%static 'images/woman_01_1.jpg' %}">
+													<span class="flaticon-visibility"></span>
+												</a>
+											</div>
+										</div>
+
+							  		</div>
+								</div>
+							</div>
+
+
+							<!-- IMAGE #1 -->
+							<div class="col-lg-3">
+
+
+								<!-- IMAGE #3 -->
+								<div id="img-4-3" class="gallery-image">
+							  		<div class="hover-overlay">
+
+							  			<!-- Image -->
+										<img class="img-fluid" src="{%static 'images/woman_02_1.jpg' %}" alt="gallery-image">
+										<div class="item-overlay"></div>
+
+										<!-- Image Zoom -->
+										<div class="image-data">
+											<div class="gallery-link ico-40 color--white">
+												<a class="image-link" href="{%static 'images/woman_02_1.jpg' %}">
+													<span class="flaticon-visibility"></span>
+												</a>
+											</div>
+										</div>
+
+							  		</div>
+								</div>
+
+
+								<!-- IMAGE #4 -->
+								<div id="img-4-4" class="gallery-image">
+							  		<div class="hover-overlay">
+
+							  			<!-- Image -->
+										<img class="img-fluid" src="{%static 'images/woman_05_1.jpg' %}" alt="gallery-image">
+										<div class="item-overlay"></div>
+
+										<!-- Image Zoom -->
+										<div class="image-data">
+											<div class="gallery-link ico-40 color--white">
+												<a class="image-link" href="{%static 'images/woman_05_1.jpg' %}">
+													<span class="flaticon-visibility"></span>
+												</a>
+											</div>
+										</div>
+
+							  		</div>
+								</div>
+
+							</div>
+
+
+							<div class="col-lg-2">
+
+
+								<!-- IMAGE #5 -->
+								<div id="img-4-5" class="gallery-image">
+							  		<div class="hover-overlay">
+
+							  			<!-- Image -->
+										<img class="img-fluid" src="{%static 'images/woman_06.jpg' %}" alt="gallery-image">
+										<div class="item-overlay"></div>
+
+										<!-- Image Zoom -->
+										<div class="image-data">
+											<div class="gallery-link ico-30 color--white">
+												<a class="image-link" href="{%static 'images/woman_06.jpg' %}">
+													<span class="flaticon-visibility"></span>
+												</a>
+											</div>
+										</div>
+							  		</div>
+								</div>
+
+
+								<!-- IMAGE #5 -->
+								<div id="img-4-6" class="gallery-image">
+							  		<div class="hover-overlay">
+
+							  			<!-- Image -->
+										<img class="img-fluid" src="{%static 'images/woman_03.jpg' %}" alt="gallery-image">
+										<div class="item-overlay"></div>
+
+										<!-- Image Zoom -->
+										<div class="image-data">
+											<div class="gallery-link ico-30 color--white">
+												<a class="image-link" href="{%static 'images/woman_03.jpg' %}">
+													<span class="flaticon-visibility"></span>
+												</a>
+											</div>
+										</div>
+
+							  		</div>
+								</div>
+
+
+							</div>
+
+
+						</div>  <!-- End row -->
+					</div>	<!-- END GALLERY-4 WRAPPER -->
+
+				</div>	   <!-- End container -->
+			</div>	<!-- END GALLERY-4 -->
+
+
+			<!-- WORKING HOURS
+			============================================= -->
+			<section class="py-8 ct-table content-section division">
+				<div class="container">
+					<div class="row d-flex align-items-center">
+
+
+						<!-- TEXT -->
+						<div class="col-lg-6">
+							<div class="left-column wow fadeInRight">
+
+								<!-- Section ID -->
+						 		<span class="section-id">Cronograma</span>
+
+								<!-- Title -->
+								<h2 class="h2-md">Horários de atendimentos</h2>
+
+								<!-- Text -->
+								<p class="mb-0">Nosso compromisso com a excelência está disponível
+									para você durante toda a semana, com horários flexíveis que se adaptam à sua rotina.
+									Seja para um rejuvenescimento facial, tratamentos corporais ou cuidados com a pele,
+									estamos prontos para atendê-lo com o máximo de atenção e carinho.
+								</p>
+
+							</div>
+						</div>
+
+
+						<!-- TABLE -->
+						<div class="col-lg-6">
+							<div class="txt-table right-column wow fadeInLeft">
+								<table class="table">
+									<tbody>
+									    <tr>
+									      	<td>Segunda - Sexta Feira</td>
+									      	<td> - </td>
+									      	<td class="text-end">10:00 - 18:00</td>
+									    </tr>
+									    <tr>
+									      	<td>Sábado</td>
+									      	<td> - </td>
+									      	<td class="text-end">12:00 - 16:00</td>
+									    </tr>
+									    <tr class="last-tr">
+									      	<td>Domingo</td>
+									      	<td>-</td>
+									      	<td class="text-end">FECHADO</td>
+									   	 </tr>
+									  </tbody>
+								</table>
+							</div>
+						</div>	<!-- END TABLE -->
+
+
+					</div>    <!-- End row -->
+				</div>	   <!-- End container -->
+			</section>	<!-- END WORKING HOURS -->
+
+
+
+
+			<!-- GALLERY-3
+			============================================= -->
+			<section id="gallery-3" class="gallery-section division">
+				<div class="container">
+
+
+					<!-- IMAGES WRAPPER -->
+					<div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-6">
+
+
+						<!-- IMAGE #1 -->
+					  	<div class="col">
+					  		<div id="img-3-1" class="gallery-image">
+						  		<div class="hover-overlay">
+
+						  			<!-- Image -->
+									<img class="img-fluid" src="{%static 'images/woman_08.jpg'%}" alt="gallery-image">
+									<div class="item-overlay"></div>
+
+									<!-- Image Zoom -->
+									<div class="image-data">
+										<div class="gallery-link ico-40 color--white">
+											<a class="image-link" href="{%static 'images/woman_08.jpg'%}">
+												<span class="flaticon-visibility"></span>
+											</a>
+										</div>
+									</div>
+
+						  		</div>
+							</div>
+						</div>
+
+
+						<!-- IMAGE #2 -->
+					  	<div class="col">
+					  		<div id="img-3-2" class="gallery-image">
+						  		<div class="hover-overlay">
+
+						  			<!-- Image -->
+									<img class="img-fluid" src="{%static 'images/beauty_01.jpg'%}" alt="gallery-image">
+									<div class="item-overlay"></div>
+
+									<!-- Image Zoom -->
+									<div class="image-data gallery-video">
+										<div class="gallery-link ico-40 color--white">
+											<a class="video-popup1" href="{%static 'images/beauty_01.mp4'%}">
+												<span class="flaticon-play"></span>
+											</a>
+										</div>
+									</div>
+
+						  		</div>
+							</div>
+						</div>
+
+
+						<!-- IMAGE #3 -->
+					  	<div class="col">
+					  		<div id="img-3-3" class="gallery-image">
+						  		<div class="hover-overlay">
+
+						  			<!-- Image -->
+									<img class="img-fluid" src="{%static 'images/woman_07.jpg'%}" alt="gallery-image">
+									<div class="item-overlay"></div>
+
+									<!-- Image Zoom -->
+									<div class="image-data">
+										<div class="gallery-link ico-40 color--white">
+											<a class="image-link" href="{%static 'images/woman_07.jpg'%}">
+												<span class="flaticon-visibility"></span>
+											</a>
+										</div>
+									</div>
+
+						  		</div>
+							</div>
+						</div>
+
+
+						<!-- IMAGE #4 -->
+					  	<div class="col">
+					  		<div id="img-3-4" class="gallery-image">
+						  		<div class="hover-overlay">
+
+						  			<!-- Image -->
+									<img class="img-fluid" src="{%static 'images/beauty_03.jpg'%}" alt="gallery-image">
+									<div class="item-overlay"></div>
+
+									<!-- Image Zoom -->
+									<div class="image-data">
+										<div class="gallery-link ico-40 color--white">
+											<a class="image-link" href="{%static 'images/beauty_03.jpg'%}">
+												<span class="flaticon-visibility"></span>
+											</a>
+										</div>
+									</div>
+
+						  		</div>
+							</div>
+						</div>
+
+
+						<!-- IMAGE #5 -->
+					  	<div class="col">
+					  		<div id="img-3-5" class="gallery-image">
+						  		<div class="hover-overlay">
+
+						  			<!-- Image -->
+									<img class="img-fluid" src="{%static 'images/beauty_02.jpg'%}" alt="gallery-image">
+									<div class="item-overlay"></div>
+
+									<!-- Image Zoom -->
+									<div class="image-data gallery-video">
+										<div class="gallery-link ico-40 color--white">
+											<a class="video-popup2" href="{%static 'images/beauty_02.mp4'%}" style="width: 285;">
+												<span class="flaticon-play"></span>
+											</a>
+										</div>
+									</div>
+
+						  		</div>
+							</div>
+						</div>
+
+
+						<!-- IMAGE #6 -->
+					  	<div class="col">
+					  		<div id="img-3-6" class="gallery-image">
+						  		<div class="hover-overlay">
+
+						  			<!-- Image -->
+									<img class="img-fluid" src="{%static 'images/woman_09.jpg'%}" alt="gallery-image">
+									<div class="item-overlay"></div>
+
+									<!-- Image Zoom -->
+									<div class="image-data">
+										<div class="gallery-link ico-40 color--white">
+											<a class="image-link" href="{%static 'images/gallery/woman_09.jpg'%}">
+												<span class="flaticon-visibility"></span>
+											</a>
+										</div>
+									</div>
+
+						  		</div>
+							</div>
+						</div>
+
+
+					</div>	<!-- END IMAGES WRAPPER -->
+
+
+				</div>	   <!-- End container -->
+			</section>	<!-- END GALLERY-3 -->
+
+			<!-- FOOTER-3
+			============================================= -->
+			<footer id="footer-3" class="pt-8 footer division">
+				<div class="container text-center">
+
+
+					<!-- FOOTER CONTENT -->
+					<div class="row">
+
+
+						<!-- FOOTER CONTACTS -->
+						<div class="col-sm-6 col-lg-4">
+							<div id="localizacao" class="footer-contacts">
+
+								<!-- Title -->
+								<h5 class="h5-md">Nossa Localização</h5>
+
+								<!-- Salon Name -->
+								<p>Clínica Das Arábia</p>
+
+								<!-- Address -->
+								<p>Av. Álvaro Ramos Nº 235, Sala 31<br> Belenzinho, São Paulo - SP, 03058-060, Brasil </p>
+
+							</div>
+						</div>
+
+
+						<!-- FOOTER CONTACTS -->
+						<div class="col-sm-6 col-lg-4">
+							<div class="footer-info">
+
+								<!-- Title -->
+								<h5 class="h5-md">Entre em contato</h5>
+
+								<!-- Phone -->
+								<p class="footer-phone"><a href="tel:+5511988910049">Telefone: +55 11 98891-0049</a></p>
+
+								<!-- Email -->
+								<p class="footer-email"><a href="mailto:dra.naimefarhat@gmail.com">dra.naimefarhat@gmail.com</a></p>
+
+								<!-- List -->
+								<ul class="foo-socials ico-20 text-center clearfix">
+									<!-- <li><a href="#" class="ico-t"><span class="flaticon-facebook"></span></a></li>	 -->
+									<li><a href="https://www.instagram.com/dra.dasarabia/" target="_blank" class="ico-youtube"><span class="flaticon-instagram"></span></a></li>
+								</ul>
+
+							</div>
+						</div>
+
+
+						<!-- FOOTER CONTACTS -->
+						<div class="col-sm-6 col-lg-4">
+							<div class="footer-info">
+
+								<!-- Title -->
+								<h5 class="h5-md">Horários de atendimento</h5>
+
+								<!-- Text -->
+								<p>Seg-Sex: <span>10:00 - 20:00</span></p>
+								<p>Sabado: <span>10:00 - 18:00</span></p>
+							</div>
+						</div>
+
+
+					</div>	  <!-- END FOOTER CONTENT -->
+
+
+					<hr>	<!-- FOOTER DIVIDER LINE -->
+
+
+					<!-- FOOTER COPYRIGHT -->
+					<div class="bottom-footer">
+						<div class="row">
+							<div class="col">
+								<div class="footer-copyright"><p>© 2025 Clínica das Árabia. All Rights Reserved</p></div>
+							</div>
+						</div>  <!-- End row -->
+					</div>	<!-- BOTTOM FOOTER -->
+
+
+				</div>	   <!-- End container -->
+			</footer>	<!-- END FOOTER-3 -->
+
+
+
+
+		</div>	<!-- END PAGE CONTENT -->
+
+
+
+
+		<!-- EXTERNAL SCRIPTS
+		============================================= -->
+		<script src="{%static 'js/jquery-3.7.0.min.js' %}"></script>
+		<script src="{%static 'js/bootstrap.min.js' %}"></script>
+		<script src="{%static 'js/modernizr.custom.js' %}"></script>
+		<script src="{%static 'js/jquery.easing.js' %}"></script>
+		<script src="{%static 'js/menu.js' %}"></script>
+		<script src="{%static 'js/datetimepicker.js' %}"></script>
+		<script src="{%static 'js/owl.carousel.min.js' %}"></script>
+		<script src="{%static 'js/jquery.magnific-popup.min.js' %}"></script>
+		<script src="{%static 'js/request-form.js' %}"></script>
+		<script src="{%static 'js/jquery.validate.min.js' %}"></script>
+		<script src="{%static 'js/jquery.ajaxchimp.min.js' %}"></script>
+		<script src="{%static 'js/popper.min.js' %}"></script>
+		<script src="{%static 'js/lunar.js' %}"></script>
+		<script src="{%static 'js/wow.js' %}"></script>
+
+		<!-- Custom Script -->
+		<script src="{%static 'js/custom.js' %}"></script>
+
+		<script>
+			$(document).on({
+			    "contextmenu": function (e) {
+			        console.log("ctx menu button:", e.which);
+
+			        // Stop the context menu
+			        e.preventDefault();
+			    },
+			    "mousedown": function(e) {
+			        console.log("normal mouse down:", e.which);
+			    },
+			    "mouseup": function(e) {
+			        console.log("normal mouse up:", e.which);
+			    }
+			});
+		</script>
+
+		<script>
+			$(function() {
+			  $(".switch").click(function() {
+			  	 $("body").toggleClass("theme--dark");
+			  });
+			});
+		</script>
+
+		<!-- Google Analytics: Change UA-XXXXX-X to be your site's ID. Go to http://www.google.com/analytics/ for more information. -->
+		<!--
+		<script>
+			var _gaq = _gaq || [];
+			_gaq.push(['_setAccount', 'UA-XXXXX-X']);
+			_gaq.push(['_trackPageview']);
+
+			(function() {
+				var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+				ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+				var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+			})();
+		</script>
+		-->
+	</body>
+</html>

@@ -1,0 +1,706 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+	<head>
+
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="description" content="Clínica das Árabia - Estética Avançada">
+		<meta name="keywords" content="Dra. Naime Farhat">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+
+  		<!-- SITE TITLE -->
+		<title>Clínica das Árabia - Agendamento</title>
+
+		<!-- FAVICON AND TOUCH ICONS -->
+		<link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+		<link rel="icon" href="favicon.ico" type="image/x-icon">
+		<link rel="apple-touch-icon" sizes="152x152" href="{%static 'images/apple-touch-icon-152x152.png'%}">
+		<link rel="apple-touch-icon" sizes="120x120" href="{%static 'images/apple-touch-icon-120x120.png'%}">
+		<link rel="apple-touch-icon" sizes="76x76" href="{%static 'images/apple-touch-icon-76x76.png'%}">
+		<link rel="apple-touch-icon" href="{%static 'images/apple-touch-icon.png'%}">
+		<link rel="icon" href="{%static 'images/apple-touch-icon.png'%}" type="image/x-icon">
+
+		<!-- GOOGLE FONTS -->
+		<link href="https://fonts.googleapis.com/css2?family=Alex+Brush&display=swap" rel="stylesheet">
+		<link href="https://fonts.googleapis.com/css2?family=Vollkorn:wght@400;500;600;700&display=swap" rel="stylesheet">
+		<link href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+		<!-- BOOTSTRAP CSS -->
+		<link href="{%static 'css/bootstrap.min.css'%}" rel="stylesheet">
+
+		<!-- FONT ICONS -->
+		<link href="{%static 'css/flaticon.css'%}" rel="stylesheet">
+
+		<!-- PLUGINS STYLESHEET -->
+		<link href="{%static 'css/menu.css'%}" rel="stylesheet">
+		<link id="effect" href="{%static 'css/fade-down.css'%}" media="all" rel="stylesheet">
+		<link href="{%static 'css/magnific-popup.css'%}" rel="stylesheet">
+		<link href="{%static 'css/owl.carousel.min.css'%}" rel="stylesheet">
+		<link href="{%static 'css/owl.theme.default.min.css'%}" rel="stylesheet">
+		<link href="{%static 'css/datetimepicker.min.css'%}" rel="stylesheet">
+		<link href="{%static 'css/lunar.css'%}" rel="stylesheet">
+
+		<!-- ON SCROLL ANIMATION -->
+		<link href="{%static 'css/animate.css'%}" rel="stylesheet">
+
+		<!-- TEMPLATE CSS -->
+		<link href="{%static 'css/style.css'%}" rel="stylesheet">
+
+		<!-- RESPONSIVE CSS -->
+		<link href="{%static 'css/responsive.css'%}" rel="stylesheet">
+
+		<!-- Flatpickr CSS -->
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+
+
+	</head>
+	
+	<body>
+
+
+
+
+		<!-- PRELOADER SPINNER
+		============================================= -->
+		<div id="loading" class="loading-black">
+			<div id="loading-center"><span class="loader"></span></div>
+		</div>
+
+
+
+
+		<!-- STYLE SWITCHER
+		============================================= -->
+		<div id="stlChanger">
+			<div class="blockChanger bgChanger">
+            	<a href="#" class="chBut ico-35">
+            		<p class="switch">
+            			<span class="drk-mode flaticon-moon"></span>
+            			<span class="lgt-mode flaticon-sum"></span>
+            		</p>
+            	</a>
+			</div>
+		</div>	  <!-- END SWITCHER -->
+
+
+
+
+		<!-- PAGE CONTENT
+		============================================= -->
+		<div id="page" class="page">
+
+
+
+
+			<!-- HEADER
+			============================================= -->
+			<header id="header" class="tra-menu navbar-light white-scroll">
+				<div class="header-wrapper">
+
+
+					<!-- MOBILE HEADER -->
+				    <div class="wsmobileheader clearfix">
+				    	<span class="smllogo">
+				    		<a href="{% url 'index' %}" class="logo-black"><img src="{%static 'images/logo-black.png'%}" alt="mobile-logo"></a>
+				    		<a href="{% url 'index' %}" class="logo-white"><img src="{%static 'images/logo-white.png'%}" alt="mobile-logo"></a>
+				    	</span>
+				    	<a id="wsnavtoggle" class="wsanimated-arrow"><span></span></a>
+				 	</div>
+
+
+				 	<!-- NAVIGATION MENU -->
+				  	<div class="wsmainfull menu clearfix">
+	    				<div class="wsmainwp clearfix">
+
+
+	    					<!-- HEADER BLACK LOGO -->
+	    					<div class="desktoplogo">
+	    						<a href="{% url 'index' %}" class="logo-black"><img src="{%static 'images/logo-black.png'%}" alt="logo"></a>
+	    					</div>
+
+
+	    					<!-- HEADER WHITE LOGO -->
+	    					<div class="desktoplogo">
+	    						<a href="{% url 'index' %}" class="logo-white"><img src="{%static 'images/logo-white.png'%}" alt="logo"></a>
+	    					</div>
+
+
+	    					<!-- MAIN MENU -->
+	      					<nav class="wsmenu clearfix">
+	        					<ul class="wsmenu-list">
+
+
+	        						<!-- DROPDOWN SUB MENU -->
+						          	<li aria-haspopup="true"><a href="{% url 'index' %}" class="h-link">Inicio</a>
+								    </li>
+
+
+								    <!-- SIMPLE NAVIGATION LINK -->
+							    	<li class="nl-simple" aria-haspopup="true"><a href="{% url 'tratamentos' %}" class="h-link">Tratamentos</a></li>
+
+
+								    <!-- SIGN UP BUTTON -->
+								    <li class="nl-simple" aria-haspopup="true">
+								    	<a href="{% url 'agendamento' %}" class="btn btn--tra-white hover--white last-link">Agendamento Online</a>
+								    </li>
+
+
+	        					</ul>
+	        				</nav>	<!-- END MAIN MENU -->
+
+
+	    				</div>
+	    			</div>	<!-- END NAVIGATION MENU -->
+
+
+				</div>     <!-- End header-wrapper -->
+			</header>	<!-- END HEADER -->
+
+
+
+
+			<!-- INNER PAGE HERO
+			============================================= -->
+			<section id="booking-page" class="inner-page-hero division">
+				<div class="container">
+					<div class="row">
+						<div class="col">
+							<div class="page-hero-txt color--white">
+								<h2>Marque uma consulta</h2>
+								<p>Por favor, preencha o formulário de agendamento abaixo para marcar uma consulta</p>
+							</div>
+						</div>
+					</div>
+				</div>	   <!-- End container -->
+			</section>	<!-- END INNER PAGE HERO -->
+
+
+			<!-- INICIO DO FORMULÁRIO DE RESERVA-1
+			============================================= -->
+			<div id="booking-1" class="pt-8 pb-7 booking-section division">
+				<div class="container">
+
+
+					<div class="row justify-content-center">
+						<div class="col-lg-10 col-xl-9">
+							<form id="agendamentoForm" name="bookinkform" method="post" enctype="multipart/form-data" class="row booking-form">
+							    {% csrf_token %}
+							    {% if messages %}
+							    <div class="messages">
+							        {% for message in messages %}
+							        <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+							            {{ message }}
+							            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+							        </div>
+							        {% endfor %}
+							    </div>
+							    {% endif %}
+							
+							    <div class="col-md-12">
+							        <div class="form-group">
+							            {{ cliente_form.nome }}
+							            {% if cliente_form.nome.errors %}
+							            <div class="alert alert-danger">
+							                {{ cliente_form.nome.errors }}
+							            </div>
+							            {% endif %}
+							        </div>
+							    </div>
+							
+							    <div class="col-lg-6">
+							        <div class="form-group">
+							            {{ cliente_form.email }}
+							            {% if cliente_form.email.errors %}
+							            <div class="alert alert-danger">
+							                {{ cliente_form.email.errors }}
+							            </div>
+							            {% endif %}
+							        </div>
+							    </div>
+							
+							    <div class="col-lg-6">
+							        <div class="form-group">
+							            {{ cliente_form.telefone }}
+							            {% if cliente_form.telefone.errors %}
+							            <div class="alert alert-danger">
+							                {{ cliente_form.telefone.errors }}
+							            </div>
+							            {% endif %}
+							        </div>
+							    </div>
+							
+							    <div class="col-lg-6">
+							        <div class="form-group">
+							            {{ agendamento_form.tratamento }}
+							            {% if agendamento_form.tratamento.errors %}
+							            <div class="alert alert-danger">
+							                {{ agendamento_form.tratamento.errors }}
+							            </div>
+							            {% endif %}
+							        </div>
+							    </div>
+							
+							    <div class="col-lg-6">
+							        <div class="form-group">
+							            {{ agendamento_form.tipo_agendamento }}
+							            {% if agendamento_form.tipo_agendamento.errors %}
+							            <div class="alert alert-danger">
+							                {{ agendamento_form.tipo_agendamento.errors }}
+							            </div>
+							            {% endif %}
+							        </div>
+							    </div>
+							
+							    <div class="col-lg-6">
+								    <div class="form-group">
+								        {{ agendamento_form.data_hora.label_tag }}
+								        {{ agendamento_form.data_hora }}
+								        {% if agendamento_form.data_hora.errors %}
+								            <div class="alert alert-danger">
+								                {{ agendamento_form.data_hora.errors }}
+								            </div>
+								        {% endif %}
+								    </div>
+								</div>
+							
+							    <div class="col-md-12 text-center">
+							        <button type="submit" class="btn btn--tra-black hover--black">
+							            Agendar
+							        </button>
+							    </div>
+							
+							    <div class="col-md-12 booking-form-msg">
+							        <div class="sending-msg"><span class="loading"></span></div>
+							    </div>
+							</form>
+						</div>
+					</div>
+
+
+
+
+			<!-- GALLERY-3
+			============================================= -->
+			<section id="gallery-3" class="bg--stone py-8 gallery-section division">
+				<div class="container">
+					<!-- IMAGES WRAPPER -->
+					<div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-6">
+
+
+						<!-- IMAGE #1 -->
+					  	<div class="col">
+					  		<div id="img-3-1" class="gallery-image">
+						  		<div class="hover-overlay">
+
+						  			<!-- Image -->
+									<img class="img-fluid" src="{%static 'images/woman_08.jpg' %}" alt="gallery-image">
+									<div class="item-overlay"></div>
+
+									<!-- Image Zoom -->
+									<div class="image-data">
+										<div class="gallery-link ico-40 color--white">
+											<a class="image-link" href="{%static 'images/gallery/woman_08.jpg' %}">
+												<span class="flaticon-visibility"></span>
+											</a>
+										</div>
+									</div>
+
+						  		</div>
+							</div>
+						</div>
+
+
+						<!-- IMAGE #2 -->
+					  	<div class="col">
+					  		<div id="img-3-2" class="gallery-image">
+						  		<div class="hover-overlay">
+
+						  			<!-- Image -->
+									<img class="img-fluid" src="{%static 'images/beauty_01.jpg' %}" alt="gallery-image">
+									<div class="item-overlay"></div>
+
+									<!-- Image Zoom -->
+									<div class="image-data gallery-video">
+										<div class="gallery-link ico-40 color--white">
+											<a class="video-popup1" href="https://www.youtube.com/embed/SZEflIVnhH8">
+												<span class="flaticon-play"></span>
+											</a>
+										</div>
+									</div>
+
+						  		</div>
+							</div>
+						</div>
+
+
+						<!-- IMAGE #3 -->
+					  	<div class="col">
+					  		<div id="img-3-3" class="gallery-image">
+						  		<div class="hover-overlay">
+
+						  			<!-- Image -->
+									<img class="img-fluid" src="{%static 'images/woman_07.jpg' %}" alt="gallery-image">
+									<div class="item-overlay"></div>
+
+									<!-- Image Zoom -->
+									<div class="image-data">
+										<div class="gallery-link ico-40 color--white">
+											<a class="image-link" href="{%static 'images/gallery/woman_07.jpg' %}">
+												<span class="flaticon-visibility"></span>
+											</a>
+										</div>
+									</div>
+
+						  		</div>
+							</div>
+						</div>
+
+
+						<!-- IMAGE #4 -->
+					  	<div class="col">
+					  		<div id="img-3-4" class="gallery-image">
+						  		<div class="hover-overlay">
+
+						  			<!-- Image -->
+									<img class="img-fluid" src="{%static 'images/beauty_02.jpg' %}" alt="gallery-image">
+									<div class="item-overlay"></div>
+
+									<!-- Image Zoom -->
+									<div class="image-data">
+										<div class="gallery-link ico-40 color--white">
+											<a class="image-link" href="{%static 'images/gallery/beauty_01.jpg' %}">
+												<span class="flaticon-visibility"></span>
+											</a>
+										</div>
+									</div>
+
+						  		</div>
+							</div>
+						</div>
+
+
+						<!-- IMAGE #5 -->
+					  	<div class="col">
+					  		<div id="img-3-5" class="gallery-image">
+						  		<div class="hover-overlay">
+
+						  			<!-- Image -->
+									<img class="img-fluid" src="{%static 'images/beauty_03.jpg' %}" alt="gallery-image">
+									<div class="item-overlay"></div>
+
+									<!-- Image Zoom -->
+									<div class="image-data gallery-video">
+										<div class="gallery-link ico-40 color--white">
+											<a class="video-popup2" href="https://www.youtube.com/watch?v=7e90gBu4pas">
+												<span class="flaticon-play"></span>
+											</a>
+										</div>
+									</div>
+
+						  		</div>
+							</div>
+						</div>
+
+
+						<!-- IMAGE #6 -->
+					  	<div class="col">
+					  		<div id="img-3-6" class="gallery-image">
+						  		<div class="hover-overlay">
+
+						  			<!-- Image -->
+									<img class="img-fluid" src="{%static 'images/woman_09.jpg' %}" alt="gallery-image">
+									<div class="item-overlay"></div>
+
+									<!-- Image Zoom -->
+									<div class="image-data">
+										<div class="gallery-link ico-40 color--white">
+											<a class="image-link" href="{%static 'images/gallery/woman_09.jpg' %}">
+												<span class="flaticon-visibility"></span>
+											</a>
+										</div>
+									</div>
+
+						  		</div>
+							</div>
+						</div>
+
+
+					</div>	<!-- END IMAGES WRAPPER -->
+
+
+				</div>	   <!-- End container -->
+			</section>	<!-- END GALLERY-3 -->
+
+
+
+
+			<!-- FOOTER-5
+			============================================= -->
+			<footer id="footer-5" class="pt-8 footer division">
+				<div class="container color--black">
+
+
+					<!-- FOOTER CONTENT -->
+					<div class="row justify-content-center">
+						<div class="col-lg-10 col-xl-9">
+							<div class="row">
+
+
+								<!-- FOOTER CONTACTS -->
+								<div class="col-sm-6 col-lg-4">
+									<div class="footer-contacts">
+
+										<!-- Title -->
+										<h5 class="h5-md" style="text-align: justify;">Nossa Localização</h5>
+
+										<!-- Salon Name -->
+										<p style="text-align: justify;">Clínica Das Arábia</p>
+
+										<!-- Address -->
+										<p style="text-align: justify;">Av. Álvaro Ramos Nº 235, Sala 31 - Belenzinho, São Paulo - SP, 03058-060, Brasil </p>
+
+									</div>
+								</div>
+
+
+								<!-- FOOTER CONTACTS -->
+								<div class="col-lg-4 order-first order-lg-1">
+									<div class="footer-logo text-center">
+
+										<!-- Logo -->
+										<div class="footer-logo-img">
+											<div><img class="footer-logo-b" src="{%static 'images/logo-black.png' %}" alt="footer-logo"></div>
+											<div><img class="footer-logo-w" src="{%static 'images/logo-white.png' %}" alt="footer-logo"></div>
+										</div>
+
+									</div>
+								</div>
+
+
+								<!-- FOOTER CONTACTS -->
+								<div class="col-sm-6 col-lg-4 order-last order-lg-2">
+									<div class="footer-info text-end">
+
+										<!-- Title -->
+										<h5 class="h5-md">Entre em contato</h5>
+
+										<!-- Phone -->
+										<p class="footer-phone"><a href="https://l.instagram.com/?u=https%3A%2F%2Fwa.me%2Fc%2F5511988910049%3Ffbclid%3DPAZXh0bgNhZW0CMTEAAaZm8O6VC2xh8crWNpn_ItCW04fxCQdZAUbvvzLGfgFT93IbXEufhlcs4KQ_aem_9l34YBVsakIJ-NqydlZbdQ&e=AT1OH8YxvxAs_wsbyFydOqf-3FLoviLRKA7kPof611B7b9ih6WanPMOvGmNDrx6GAtfCLcRTKe2VMkg75CldJ0gdXljuJanDlSS8fw" target="_blank">
+											Telefone: +55 11 98891-0049</a></p>
+
+										<!-- Email -->
+										<p class="footer-email"><a href="mailto:dra.naimefarhat@gmail.com" target="_blank">dra.naimefarhat@gmail.com</a></p>
+
+
+									</div>
+								</div>
+
+
+							</div>
+						</div>
+					</div>	<!-- END FOOTER CONTENT -->
+
+
+					<!-- BOTTOM FOOTER -->
+					<div class="bottom-footer">
+						<div class="row justify-content-center">
+							<div class="col-lg-10 col-xl-9">
+
+
+								<hr>	<!-- FOOTER DIVIDER LINE -->
+
+
+								<!-- BOTTOM FOOTER CONTENT -->
+								<div class="row row-cols-1 row-cols-md-2 d-flex align-items-center">
+
+
+									<!-- FOOTER COPYRIGHT -->
+									<div class="col">
+										<div class="footer-copyright"><p>© 2025 Clínica das Árabia. All Rights Reserved</p></div>
+									</div>
+
+
+									<!-- BOTTOM FOOTER LINKS -->
+									<div class="col">
+										<ul class="bottom-footer-socials ico-25 text-end">
+										<!--	<li><a href="#"><span class="flaticon-facebook"></span></a></li>
+											<li><a href="#"><span class="flaticon-twitter"></span></a></li> -->
+											<li><a href="https://www.instagram.com/dra.dasarabia/" target="_blank" class="ico-youtube"><span class="flaticon-instagram"></span></a></li>
+										<!--	<li><a href="#"><span class="flaticon-youtube"></span></a></li> -->
+										</ul>
+									</div>
+
+
+								</div>	<!-- END BOTTOM FOOTER CONTENT -->
+
+
+							</div>
+						</div>  <!-- End row -->
+					</div>	<!-- END BOTTOM FOOTER -->
+
+
+				</div>	   <!-- End container -->
+			</footer>	<!-- END FOOTER-5 -->
+
+
+
+
+		</div>	<!-- END PAGE CONTENT -->
+
+
+
+
+		<!-- EXTERNAL SCRIPTS
+		============================================= -->
+		<script src="{%static 'js/jquery-3.7.0.min.js' %}"></script>
+		<script src="{%static 'js/bootstrap.min.js' %}"></script>
+		<script src="{%static 'js/modernizr.custom.js' %}"></script>
+		<script src="{%static 'js/jquery.easing.js' %}"></script>
+		<script src="{%static 'js/menu.js' %}"></script>
+		<script src="{%static 'js/datetimepicker.js' %}"></script>
+		<script src="{%static 'js/owl.carousel.min.js' %}"></script>
+		<script src="{%static 'js/jquery.magnific-popup.min.js' %}"></script>
+		<!-- <script src="{%static 'js/booking-form.js' %}"></script>	 -->
+		<script src="{%static 'js/jquery.validate.min.js' %}"></script>
+		<script src="{%static 'js/jquery.ajaxchimp.min.js' %}"></script>
+		<script src="{%static 'js/popper.min.js' %}"></script>
+		<script src="{%static 'js/lunar.js' %}"></script>
+		<script src="{%static 'js/wow.js' %}"></script>
+
+		<!-- Custom Script -->
+		<script src="{%static 'js/custom.js' %}"></script>
+
+		<script>
+			$(document).on({
+			    "contextmenu": function (e) {
+			        console.log("ctx menu button:", e.which);
+
+			        // Stop the context menu
+			        e.preventDefault();
+			    },
+			    "mousedown": function(e) {
+			        console.log("normal mouse down:", e.which);
+			    },
+			    "mouseup": function(e) {
+			        console.log("normal mouse up:", e.which);
+			    }
+			});
+		</script>
+
+		<script>
+			$(function() {
+			  $(".switch").click(function() {
+			  	 $("body").toggleClass("theme--dark");
+			  });
+			});
+		</script>
+		<script>
+		    document.getElementById('agendamentoForm').addEventListener('submit', async function (e) {
+		        e.preventDefault(); // Impede o envio padrão do formulário
+			
+		        const form = e.target;
+		        const formData = new FormData(form);
+			
+		        try {
+		            const response = await fetch(window.location.href, {
+		                method: 'POST',
+		                body: formData,
+		                headers: {
+		                    'X-Requested-With': 'XMLHttpRequest',
+		                    'X-CSRFToken': form.querySelector('[name=csrfmiddlewaretoken]').value
+		                },
+		            });
+				
+		            const data = await response.json();
+				
+		            if (response.ok) { // Verifica se o status HTTP é 2xx (sucesso)
+		                if (data.status === 'success') {
+		                    // Abre o WhatsApp com a mensagem em uma nova aba
+		                    window.open(data.whatsapp_url, '_blank');
+		                } else {
+		                    // Erro retornado com status 200, mas com status 'error' no JSON
+		                    let errorMessage = data.message || "Ocorreu um erro desconhecido.";
+		                    alert("Erro: " + errorMessage);
+		                }
+		            } else { // Trata erros HTTP como 400 ou 500
+		                let errorMessage = "Ocorreu um erro no servidor.";
+					
+		                if (data.errors) {
+		                    // Erros de validação do formulário
+		                    errorMessage = "Por favor, corrija os seguintes erros:\n";
+		                    for (const field in data.errors) {
+		                        if (Object.hasOwnProperty.call(data.errors, field)) {
+		                            // Concatena as mensagens de erro para cada campo
+		                            errorMessage += `- ${field}: ${data.errors[field].join(' ')}\n`;
+		                        }
+		                    }
+		                } else if (data.message) {
+		                    // Outro tipo de erro retornado pelo backend
+		                    errorMessage = "Erro: " + data.message;
+		                }
+					
+		                console.error('Erro de validação ou do servidor:', data);
+		                alert(errorMessage);
+		            }
+				
+		        } catch (error) {
+		            console.error('Erro de rede ou inesperado:', error);
+		            alert("Erro inesperado no envio do formulário. Verifique sua conexão e tente novamente.");
+		        }
+		    });
+		</script>
+	<!-- Flatpickr JS -->
+	<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+	<script>
+		function isBusinessHours(date) {
+		    const day = date.getDay();
+		    const hour = date.getHours();
+		    const minutes = date.getMinutes();
+		
+		    if (day >= 1 && day <= 5) {
+		        if (hour < 10 || hour > 18) return false;
+		        if (hour === 18 && minutes > 0) return false;
+		        return true;
+		    } else if (day === 6) {
+		        if (hour < 12 || hour > 16) return false;
+		        if (hour === 16 && minutes > 0) return false;
+		        return true;
+		    }
+		    return false;
+		}
+
+		flatpickr("#id_data_hora", {
+		    enableTime: true,
+		    dateFormat: "d/m/Y H:i",
+		    minDate: "today",
+		    disable: [
+		        function(date) {
+		            // Bloqueia domingo (0)
+		            return (date.getDay() === 0);
+		        }
+		    ],
+		    time_24hr: true,
+		    // Min e max hora padrão para dias de semana
+		    minTime: "10:00",
+		    maxTime: "18:00",
+		    onChange: function(selectedDates, dateStr, instance) {
+		        if (selectedDates.length === 0) return;
+			
+		        const date = selectedDates[0];
+		        const day = date.getDay();
+			
+		        if(day === 6) { // sábado
+		            instance.set('minTime', '12:00');
+		            instance.set('maxTime', '16:00');
+		        } else {
+		            instance.set('minTime', '10:00');
+		            instance.set('maxTime', '18:00');
+		        }
+		    }
+		});
+
+	</script>
+
+	</body>
+</html>
