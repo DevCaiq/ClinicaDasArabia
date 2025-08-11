@@ -1,21 +1,30 @@
+# settings.py
 from pathlib import Path
 import os
 from django.contrib.messages import constants as messages
 from dotenv import load_dotenv
+
 load_dotenv()
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# SECURITY WARNING: keep the secret key used in production secret!
+# ----- SECRET & DEBUG -----
 SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY')
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = int(os.environ.get('DJANGO_DEBUG', default=1))
+DEBUG = os.environ.get('DJANGO_DEBUG', '1').lower() in ('1', 'true', 'yes')
 
-ALLOWED_HOSTS = ['clinicadasarabia.com.br/', 'localhost', '72.60.8.166']
+# Em produção: exigir a SECRET_KEY
+if not DEBUG and not SECRET_KEY:
+    raise ValueError("DJANGO_SECRET_KEY must be set in production environment")
 
-# Application definition
+# ----- Hosts -----
+# Use variável de ambiente DJANGO_ALLOWED_HOSTS como 'dominio.com,www.dominio.com,127.0.0.1'
+ALLOWED_HOSTS = os.environ.get(
+    'DJANGO_ALLOWED_HOSTS',
+    'clinicadasarabia.com.br,www.clinicadasarabia.com.br,localhost,127.0.0.1,72.60.8.166'
+).split(',')
+
+# ----- Installed apps -----
 INSTALLED_APPS = [
     'jazzmin',
     'django.contrib.admin',
@@ -27,15 +36,16 @@ INSTALLED_APPS = [
     'clinica',
 ]
 
+# ----- Middleware (WhiteNoise logo após SecurityMiddleware) -----
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',  # <<-- importante: após SecurityMiddleware
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
 ROOT_URLCONF = 'webclinica.urls'
@@ -43,7 +53,8 @@ ROOT_URLCONF = 'webclinica.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': ['templates'],
+        # Recomendo usar BASE_DIR / 'templates' para caminhos absolutos
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -59,10 +70,10 @@ TEMPLATES = [
 WSGI_APPLICATION = 'webclinica.wsgi.application'
 
 # -----------------------------------------------------------
-# Configurações de Deploy (exclusivas para produção)
+# Configurações específicas para produção (quando DEBUG == False)
 # -----------------------------------------------------------
 if not DEBUG:
-    # Configurações de segurança para HTTPS
+    # Segurança HTTPS
     SECURE_SSL_REDIRECT = True
     SESSION_COOKIE_SECURE = True
     CSRF_COOKIE_SECURE = True
@@ -70,8 +81,18 @@ if not DEBUG:
     SECURE_HSTS_SECONDS = 31536000  # 1 ano
     SECURE_HSTS_INCLUDE_SUBDOMAINS = True
     SECURE_BROWSER_XSS_FILTER = True
+    SECURE_CONTENT_TYPE_NOSNIFF = True
 
-    # Configuração de banco de dados para produção (PostgreSQL)
+    # Quando estiver atrás do Nginx (proxy) para que Django saiba do HTTPS
+    SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
+    # Origem confiáveis para CSRF — especifique com esquema (https://...)
+    CSRF_TRUSTED_ORIGINS = os.environ.get(
+        'DJANGO_CSRF_TRUSTED_ORIGINS',
+        'https://clinicadasarabia.com.br,https://www.clinicadasarabia.com.br'
+    ).split(',')
+
+    # Banco de dados de produção (Postgres) — valores via env
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql',
@@ -83,7 +104,7 @@ if not DEBUG:
         }
     }
 else:
-    # Configuração de banco de dados para desenvolvimento (SQLite)
+    # Desenvolvimento - SQLite
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',
@@ -91,38 +112,32 @@ else:
         }
     }
 
-# Password validation
+# Password validation (mantive como você tinha)
 AUTH_PASSWORD_VALIDATORS = [
-    {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
-    },
+    {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',},
+    {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',},
+    {'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',},
+    {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',},
 ]
 
-# Internationalization
+# Internacionalização
 LANGUAGE_CODE = 'pt-br'
 TIME_ZONE = 'America/Sao_Paulo'
 USE_I18N = True
 USE_TZ = True
 
-# Static files (CSS, JavaScript, Images)
+# ----- Static & Media -----
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'public')
+# pasta onde collectstatic colocará todos os arquivos para o Nginx servir
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
+# WhiteNoise storage (atenção: CompressedManifest pode quebrar se faltar arquivos referenciados)
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-# Mensagens personalizadas
+# Mensagens
 MESSAGE_TAGS = {
     messages.INFO: 'info',
     messages.SUCCESS: 'success',
@@ -132,7 +147,7 @@ MESSAGE_TAGS = {
 
 AUTH_USER_MODEL = 'clinica.CustomUser'
 
-# Jazzmin customização
+# Jazzmin (mantive seu bloco)
 JAZZMIN_SETTINGS = {
     'site_title': 'Clínica Das Árabia',
     'site_header': 'Clínica Das Árabia',
@@ -156,3 +171,5 @@ JAZZMIN_SETTINGS = {
     'search_model': ['tratamento.Tratamento'],
     "custom_css": "css/custom-jazzmin.css",
 }
+
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
