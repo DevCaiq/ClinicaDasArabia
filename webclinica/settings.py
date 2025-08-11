@@ -13,7 +13,7 @@ SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = int(os.environ.get('DJANGO_DEBUG', default=1))
 
-ALLOWED_HOSTS = ['clinicadasarabia.com.br/']
+ALLOWED_HOSTS = ['clinicadasarabia.com.br/', 'localhost', '72.60.8.166']
 
 # Application definition
 INSTALLED_APPS = [
