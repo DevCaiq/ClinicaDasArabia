@@ -9,10 +9,10 @@
 		<meta name="keywords" content="Dra. Naime Farhat">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 
-  		<!-- SITE TITLE -->
+  		<!-- TÍTULO DO SITE -->
 		<title>Clínica Das Árabia - Tratamentos</title>
 
-		<!-- FAVICON AND TOUCH ICONS -->
+		<!-- FAVICON E ÍCONES DE TOCAR -->
 		<link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
 		<link rel="icon" href="favicon.ico" type="image/x-icon">
 		<link rel="apple-touch-icon" sizes="152x152" href="{%static 'images/apple-touch-icon-152x152.png'%}">
@@ -59,8 +59,7 @@
 
 
 
-		<!-- PRELOADER SPINNER
-		============================================= -->
+		<!-- SPINNER DE PRÉ-CARREGAMENTO -->
 		<div id="loading" class="loading-black">
 			<div id="loading-center"><span class="loader"></span></div>
 		</div>
@@ -68,8 +67,7 @@
 
 
 
-		<!-- STYLE SWITCHER
-		============================================= -->
+		<!-- ALTERADOR DE ESTILO  -->
 		<div id="stlChanger">
 			<div class="blockChanger bgChanger">
             	<a href="#" class="chBut ico-35">
@@ -79,25 +77,23 @@
             		</p>
             	</a>
 			</div>
-		</div>	  <!-- END SWITCHER -->
+		</div>	  <!-- FINAL DO ALTERADOR -->
 
 
 
 
-		<!-- PAGE CONTENT
-		============================================= -->
+		<!-- CONTEÚDO DA PÁGINA  -->
 		<div id="page" class="page">
 
 
 
 
-			<!-- HEADER
-			============================================= -->
+			<!-- CABEÇALHO -->
 			<header id="header" class="tra-menu navbar-light white-scroll">
 				<div class="header-wrapper">
 
 
-					<!-- MOBILE HEADER -->
+					<!-- CABEÇALHO MOBILE -->
 				    <div class="wsmobileheader clearfix">
 				    	<span class="smllogo">
 				    		<a href="{% url 'index' %}" class="logo-black"><img src="{%static 'images/logo-black.png'%}" alt="mobile-logo"></a>
@@ -107,24 +103,24 @@
 				 	</div>
 
 
-				 	<!-- NAVIGATION MENU -->
+				 	<!-- MENU DE NAVEGAÇÃO -->
 				  	<div class="wsmainfull menu clearfix">
 	    				<div class="wsmainwp clearfix">
 
 
-	    					<!-- HEADER BLACK LOGO -->
+	    					<!-- CABEÇALHO LOGO PRETO -->
 	    					<div class="desktoplogo">
 	    						<a href="{% url 'index' %}" class="logo-black"><img src="{%static 'images/logo-black.png'%}" alt="logo"></a>
 	    					</div>
 
 
-	    					<!-- HEADER WHITE LOGO -->
+	    					<!-- CABEÇALHO LOGO BRANCO -->
 	    					<div class="desktoplogo">
 	    						<a href="{% url 'index' %}" class="logo-white"><img src="{%static 'images/logo-white.png'%}" alt="logo"></a>
 	    					</div>
 
 
-	    					<!-- MAIN MENU -->
+	    					<!-- MENU PRINCIPAL -->
 	      					<nav class="wsmenu clearfix">
 	        					<ul class="wsmenu-list">
 
@@ -134,32 +130,31 @@
 								    </li>
 
 
-								    <!-- SIMPLE NAVIGATION LINK -->
+								    <!-- LINK DE NAVEGAÇÃO SIMPLES -->
 							    	<li class="nl-simple" aria-haspopup="true"><a href="{% url 'tratamentos' %}" class="h-link">Tratamentos</a></li>
 
 
-								    <!-- SIGN UP BUTTON -->
+								    <!-- BOTÃO DE AGENDAMENTO -->
 								    <li class="nl-simple" aria-haspopup="true">
 								    	<a href="{% url 'agendamento' %}" class="btn btn--tra-white hover--white last-link">Agendamento Online</a>
 								    </li>
 
 
 	        					</ul>
-	        				</nav>	<!-- END MAIN MENU -->
+	        				</nav>	<!-- FIM DO MENU PRINCIPAL -->
 
 
 	    				</div>
-	    			</div>	<!-- END NAVIGATION MENU -->
+	    			</div>	<!-- FIM DO MENU DE NAVEGAÇÃO -->
 
 
-				</div>     <!-- End header-wrapper -->
-			</header>	<!-- END HEADER -->
+				</div>     <!-- Fim do cabeçalho-wrapper -->
+			</header>	<!-- FINAL DO CABEÇALHO -->
 
 
 
 
-			<!-- INNER PAGE HERO
-			============================================= -->
+			<!-- PÁGINA INTERNA HERO -->
 			<section id="pricing-page-1" class="inner-page-hero division">
 				<div class="container">
 					<div class="row">
@@ -170,13 +165,13 @@
 							</div>
 						</div>
 					</div>
-				</div>	   <!-- End container -->
-			</section>	<!-- END INNER PAGE HERO -->
+				</div>	   <!-- Fim do contêiner -->
+			</section>	<!-- FIM DA PÁGINA INTERNA DO HERÓI -->
 
 
 
 
-			<!-- PRICING-5
+			<!-- PREÇO-5
 			============================================= -->
 			<div class="pt-8 pricing-5 pricing-section division">
 				<div class="container">
@@ -201,11 +196,11 @@
 									<!-- TRATAMENTOS FACIAIS -->
 									<ul class="pricing-list">
 										{% for tratamento in tratamentos %}
-											{% if tratamento.tipoTratamento == "Facial" %}
+											{% if tratamento.tipo_tratamento == "Facial" %}
 												<!-- ITENS -->
 												<li class="pricing-5-item">
 													<div class="detail-price">
-														<div class="price-name"><p>{{ tratamento.nomeTratamento }}</p></div>
+														<div class="price-name"><p>{{ tratamento.nome_tratamento }}</p></div>
 													</div>
 													<!-- DESCRIÇÃO -->
 													<div class="price-txt">
@@ -225,11 +220,11 @@
 									<!-- LISTA DE TRATAMENTOS PARA GLUTEOS -->
 									<ul class="pricing-list">
 										{% for tratamento in tratamentos %}
-											{% if tratamento.tipoTratamento == "Glúteos" %}
+											{% if tratamento.tipo_tratamento == "Glúteos" %}
 												<!-- PRICING ITEM #1 -->
 												<li class="pricing-5-item">
 													<div class="detail-price">
-														<div class="price-name"><p>{{ tratamento.nomeTratamento }}</p></div>
+														<div class="price-name"><p>{{ tratamento.nome_tratamento }}</p></div>
 													</div>
 													<!-- Description -->
 													<div class="price-txt">
@@ -249,7 +244,7 @@
 								<div class="pricing-5-table right-column wow fadeInUp">
 
 
-									<!-- PRICING LIST CATEGORY -->
+									<!-- CATEGORIA DA LISTA DE PREÇOS -->
 									<div class="pricing-5-category p5-top mb-4">
 										<h3>Tratamentos para os Lábios</h3>
 									</div>
@@ -258,11 +253,11 @@
 									<!-- TRATAMENTOS PARA LABIOS -->
 									<ul class="pricing-list">
 										{% for tratamento in tratamentos %}
-											{% if tratamento.tipoTratamento == "Labial" %}
+											{% if tratamento.tipo_tratamento == "Labial" %}
 												<!-- ITENS -->
 												<li class="pricing-5-item">
 													<div class="detail-price">
-														<div class="price-name"><p>{{ tratamento.nomeTratamento }}</p></div>
+														<div class="price-name"><p>{{ tratamento.nome_tratamento }}</p></div>
 													</div>
 													<!-- DESCRIÇÃO -->
 													<div class="price-txt">
@@ -275,7 +270,7 @@
 									<!-- FIM DO TRATAMENTO PARA LABIOS -->
 
 
-									<!-- PRICING LIST CATEGORY -->
+									<!-- CATEGORIA DA LISTA DE PREÇOS -->
 									<div class="pricing-5-category mt-4 mb-4">
 										<h3>Tratamentos Corporais</h3>
 									</div>
@@ -284,11 +279,11 @@
 									<!-- TRATAMENTOS CORPORAIS -->
 									<ul class="pricing-list">
 										{% for tratamento in tratamentos %}
-											{% if tratamento.tipoTratamento == "Corporal" %}
+											{% if tratamento.tipo_tratamento == "Corporal" %}
 												<!-- ITENS -->
 												<li class="pricing-5-item">
 													<div class="detail-price">
-														<div class="price-name"><p>{{ tratamento.nomeTratamento }}</p></div>
+														<div class="price-name"><p>{{ tratamento.nome_tratamento }}</p></div>
 													</div>
 													<!-- DESCRIÇÃO -->
 													<div class="price-txt">
@@ -309,43 +304,42 @@
 					<!-- FIM DA SESSÃO DE TRATAMENTOS -->
 
 
-					<!-- BUTTON -->
+					<!-- BOTÃO -->
 			 		<div class="row">
 			 			<div class="col">
 			 				<div class="more-btn mt-6">
 								<a href="{% url 'agendamento' %}" class="btn btn--tra-black hover--black">Agendamento Online</a>
 							</div>
 						</div>
-					</div>	<!-- END BUTTON -->
+					</div>	<!-- BOTÃO FIM -->
 
 
-				</div>  <!-- End container -->
-			</div>	<!-- PRICING-5  -->
+				</div>  <!-- Fim do contêiner -->
+			</div>	<!-- PREÇO-5  -->
 
 
 
 
-			<!-- GALLERY-4
-			============================================= -->
+			<!-- GALERIA-4 -->
 			<div id="gallery-4" class="py-8 gallery-section division">
 				<div class="container-fluid">
 
 
-					<!-- GALLERY-4 WRAPPER -->
+					<!-- GALERIA-4 WRAPPER -->
 					<div class="gallery-4-wrapper">
 						<div class="row">
 
 
-							<!-- IMAGE #1 -->
+							<!-- IMAGEM #1 -->
 							<div class="col-md-6 col-lg-2">
 								<div id="img-4-1" class="gallery-image">
 							  		<div class="hover-overlay">
 
-							  			<!-- Image -->
+							  			<!-- Imagem -->
 										<img class="img-fluid" src="{%static 'images/woman_04.jpg' %}" alt="gallery-image">
 										<div class="item-overlay"></div>
 
-										<!-- Image Zoom -->
+										<!-- Imagem Zoom -->
 										<div class="image-data">
 											<div class="gallery-link ico-30 color--white">
 												<a class="image-link" href="{%static 'images/woman_04.jpg' %}">
@@ -359,16 +353,16 @@
 							</div>
 
 
-							<!-- IMAGE #2 -->
+							<!-- IMAGEM #2 -->
 							<div class="col-md-6 col-lg-5">
 								<div id="img-4-2" class="gallery-image">
 							  		<div class="hover-overlay">
 
-							  			<!-- Image -->
+							  			<!-- Imagem -->
 										<img class="img-fluid" src=" {%static 'images/woman_01_1.jpg' %}" alt="gallery-image">
 										<div class="item-overlay"></div>
 
-										<!-- Image Zoom -->
+										<!-- Imagem Zoom -->
 										<div class="image-data">
 											<div class="gallery-link ico-40 color--white">
 												<a class="image-link" href="{%static 'images/woman_01_1.jpg' %}">
@@ -382,19 +376,19 @@
 							</div>
 
 
-							<!-- IMAGE #1 -->
+							<!-- IMAGEM #1 -->
 							<div class="col-lg-3">
 
 
-								<!-- IMAGE #3 -->
+								<!-- IMAGEM #3 -->
 								<div id="img-4-3" class="gallery-image">
 							  		<div class="hover-overlay">
 
-							  			<!-- Image -->
+							  			<!-- Imagem -->
 										<img class="img-fluid" src="{%static 'images/woman_02_1.jpg' %}" alt="gallery-image">
 										<div class="item-overlay"></div>
 
-										<!-- Image Zoom -->
+										<!-- Imagem Zoom -->
 										<div class="image-data">
 											<div class="gallery-link ico-40 color--white">
 												<a class="image-link" href="{%static 'images/woman_02_1.jpg' %}">
@@ -407,15 +401,15 @@
 								</div>
 
 
-								<!-- IMAGE #4 -->
+								<!-- IMAGEM #4 -->
 								<div id="img-4-4" class="gallery-image">
 							  		<div class="hover-overlay">
 
-							  			<!-- Image -->
+							  			<!-- Imagem -->
 										<img class="img-fluid" src="{%static 'images/woman_05_1.jpg' %}" alt="gallery-image">
 										<div class="item-overlay"></div>
 
-										<!-- Image Zoom -->
+										<!-- Imagem Zoom -->
 										<div class="image-data">
 											<div class="gallery-link ico-40 color--white">
 												<a class="image-link" href="{%static 'images/woman_05_1.jpg' %}">
@@ -433,15 +427,15 @@
 							<div class="col-lg-2">
 
 
-								<!-- IMAGE #5 -->
+								<!-- IMAGEM #5 -->
 								<div id="img-4-5" class="gallery-image">
 							  		<div class="hover-overlay">
 
-							  			<!-- Image -->
+							  			<!-- Imagem -->
 										<img class="img-fluid" src="{%static 'images/woman_06.jpg' %}" alt="gallery-image">
 										<div class="item-overlay"></div>
 
-										<!-- Image Zoom -->
+										<!-- Imagem Zoom -->
 										<div class="image-data">
 											<div class="gallery-link ico-30 color--white">
 												<a class="image-link" href="{%static 'images/woman_06.jpg' %}">
@@ -453,15 +447,15 @@
 								</div>
 
 
-								<!-- IMAGE #5 -->
+								<!-- IMAGEM #5 -->
 								<div id="img-4-6" class="gallery-image">
 							  		<div class="hover-overlay">
 
-							  			<!-- Image -->
+							  			<!-- Imagem -->
 										<img class="img-fluid" src="{%static 'images/woman_03.jpg' %}" alt="gallery-image">
 										<div class="item-overlay"></div>
 
-										<!-- Image Zoom -->
+										<!-- Imagem Zoom -->
 										<div class="image-data">
 											<div class="gallery-link ico-30 color--white">
 												<a class="image-link" href="{%static 'images/woman_03.jpg' %}">
@@ -477,31 +471,30 @@
 							</div>
 
 
-						</div>  <!-- End row -->
-					</div>	<!-- END GALLERY-4 WRAPPER -->
+						</div>  <!-- Linha final -->
+					</div>	<!-- FIM DA GALERIA-4 WRAPPER -->
 
-				</div>	   <!-- End container -->
-			</div>	<!-- END GALLERY-4 -->
+				</div>	   <!-- Fim do contêiner -->
+			</div>	<!-- FIM DA GALERIA-4 -->
 
 
-			<!-- WORKING HOURS
-			============================================= -->
+			<!-- HORAS DE TRABALHO -->
 			<section class="py-8 ct-table content-section division">
 				<div class="container">
 					<div class="row d-flex align-items-center">
 
 
-						<!-- TEXT -->
+						<!-- TEXTO -->
 						<div class="col-lg-6">
 							<div class="left-column wow fadeInRight">
 
-								<!-- Section ID -->
+								<!-- ID da seção -->
 						 		<span class="section-id">Cronograma</span>
 
-								<!-- Title -->
+								<!-- Título -->
 								<h2 class="h2-md">Horários de atendimentos</h2>
 
-								<!-- Text -->
+								<!-- Texto -->
 								<p class="mb-0">Nosso compromisso com a excelência está disponível
 									para você durante toda a semana, com horários flexíveis que se adaptam à sua rotina.
 									Seja para um rejuvenescimento facial, tratamentos corporais ou cuidados com a pele,
@@ -512,7 +505,7 @@
 						</div>
 
 
-						<!-- TABLE -->
+						<!-- TABELA -->
 						<div class="col-lg-6">
 							<div class="txt-table right-column wow fadeInLeft">
 								<table class="table">
@@ -535,36 +528,35 @@
 									  </tbody>
 								</table>
 							</div>
-						</div>	<!-- END TABLE -->
+						</div>	<!-- FIM DA TABELA -->
 
 
-					</div>    <!-- End row -->
-				</div>	   <!-- End container -->
+					</div>    <!-- Linha final -->
+				</div>	   <!-- Fim do contêiner -->
 			</section>	<!-- END WORKING HOURS -->
 
 
 
 
-			<!-- GALLERY-3
-			============================================= -->
+			<!-- GALERIA-3 -->
 			<section id="gallery-3" class="gallery-section division">
 				<div class="container">
 
 
-					<!-- IMAGES WRAPPER -->
+					<!-- IMAGENS WRAPPER -->
 					<div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-6">
 
 
-						<!-- IMAGE #1 -->
+						<!-- IMAGEM #1 -->
 					  	<div class="col">
 					  		<div id="img-3-1" class="gallery-image">
 						  		<div class="hover-overlay">
 
-						  			<!-- Image -->
+						  			<!-- Imagem -->
 									<img class="img-fluid" src="{%static 'images/woman_08.jpg'%}" alt="gallery-image">
 									<div class="item-overlay"></div>
 
-									<!-- Image Zoom -->
+									<!-- Imagem Zoom -->
 									<div class="image-data">
 										<div class="gallery-link ico-40 color--white">
 											<a class="image-link" href="{%static 'images/woman_08.jpg'%}">
@@ -578,16 +570,16 @@
 						</div>
 
 
-						<!-- IMAGE #2 -->
+						<!-- IMAGEM #2 -->
 					  	<div class="col">
 					  		<div id="img-3-2" class="gallery-image">
 						  		<div class="hover-overlay">
 
-						  			<!-- Image -->
+						  			<!-- Imagem -->
 									<img class="img-fluid" src="{%static 'images/beauty_01.jpg'%}" alt="gallery-image">
 									<div class="item-overlay"></div>
 
-									<!-- Image Zoom -->
+									<!-- Imagem Zoom -->
 									<div class="image-data gallery-video">
 										<div class="gallery-link ico-40 color--white">
 											<a class="video-popup1" href="{%static 'images/beauty_01.mp4'%}">
@@ -601,16 +593,16 @@
 						</div>
 
 
-						<!-- IMAGE #3 -->
+						<!-- IMAGEM #3 -->
 					  	<div class="col">
 					  		<div id="img-3-3" class="gallery-image">
 						  		<div class="hover-overlay">
 
-						  			<!-- Image -->
+						  			<!-- Imagem -->
 									<img class="img-fluid" src="{%static 'images/woman_07.jpg'%}" alt="gallery-image">
 									<div class="item-overlay"></div>
 
-									<!-- Image Zoom -->
+									<!-- Imagem Zoom -->
 									<div class="image-data">
 										<div class="gallery-link ico-40 color--white">
 											<a class="image-link" href="{%static 'images/woman_07.jpg'%}">
@@ -624,16 +616,16 @@
 						</div>
 
 
-						<!-- IMAGE #4 -->
+						<!-- IMAGEM #4 -->
 					  	<div class="col">
 					  		<div id="img-3-4" class="gallery-image">
 						  		<div class="hover-overlay">
 
-						  			<!-- Image -->
+						  			<!-- Imagem -->
 									<img class="img-fluid" src="{%static 'images/beauty_03.jpg'%}" alt="gallery-image">
 									<div class="item-overlay"></div>
 
-									<!-- Image Zoom -->
+									<!-- Imagem Zoom -->
 									<div class="image-data">
 										<div class="gallery-link ico-40 color--white">
 											<a class="image-link" href="{%static 'images/beauty_03.jpg'%}">
@@ -647,16 +639,16 @@
 						</div>
 
 
-						<!-- IMAGE #5 -->
+						<!-- IMAGEM #5 -->
 					  	<div class="col">
 					  		<div id="img-3-5" class="gallery-image">
 						  		<div class="hover-overlay">
 
-						  			<!-- Image -->
+						  			<!-- Imagem -->
 									<img class="img-fluid" src="{%static 'images/beauty_02.jpg'%}" alt="gallery-image">
 									<div class="item-overlay"></div>
 
-									<!-- Image Zoom -->
+									<!-- Imagem Zoom -->
 									<div class="image-data gallery-video">
 										<div class="gallery-link ico-40 color--white">
 											<a class="video-popup2" href="{%static 'images/beauty_02.mp4'%}" style="width: 285;">
@@ -670,16 +662,16 @@
 						</div>
 
 
-						<!-- IMAGE #6 -->
+						<!-- IMAGEM #6 -->
 					  	<div class="col">
 					  		<div id="img-3-6" class="gallery-image">
 						  		<div class="hover-overlay">
 
-						  			<!-- Image -->
+						  			<!-- Imagem -->
 									<img class="img-fluid" src="{%static 'images/woman_09.jpg'%}" alt="gallery-image">
 									<div class="item-overlay"></div>
 
-									<!-- Image Zoom -->
+									<!-- Imagem Zoom -->
 									<div class="image-data">
 										<div class="gallery-link ico-40 color--white">
 											<a class="image-link" href="{%static 'images/gallery/woman_09.jpg'%}">
@@ -693,53 +685,52 @@
 						</div>
 
 
-					</div>	<!-- END IMAGES WRAPPER -->
+					</div>	<!-- FIM DAS IMAGENS WRAPPER -->
 
 
-				</div>	   <!-- End container -->
-			</section>	<!-- END GALLERY-3 -->
+				</div>	   <!-- Fim do contêiner -->
+			</section>	<!-- FIM DA GALERIA-3 -->
 
-			<!-- FOOTER-3
-			============================================= -->
+			<!-- RODAPÉ-3 -->
 			<footer id="footer-3" class="pt-8 footer division">
 				<div class="container text-center">
 
 
-					<!-- FOOTER CONTENT -->
+					<!-- CONTEÚDO DO RODAPÉ -->
 					<div class="row">
 
 
-						<!-- FOOTER CONTACTS -->
+						<!-- RODAPÉ DE CONTATOS -->
 						<div class="col-sm-6 col-lg-4">
 							<div id="localizacao" class="footer-contacts">
 
-								<!-- Title -->
+								<!-- Título -->
 								<h5 class="h5-md">Nossa Localização</h5>
 
-								<!-- Salon Name -->
+								<!-- Nome da clínica -->
 								<p>Clínica Das Arábia</p>
 
-								<!-- Address -->
+								<!-- Endereço -->
 								<p>Av. Álvaro Ramos Nº 235, Sala 31<br> Belenzinho, São Paulo - SP, 03058-060, Brasil </p>
 
 							</div>
 						</div>
 
 
-						<!-- FOOTER CONTACTS -->
+						<!-- RODAPÉ DE CONTATOS -->
 						<div class="col-sm-6 col-lg-4">
 							<div class="footer-info">
 
-								<!-- Title -->
+								<!-- Título -->
 								<h5 class="h5-md">Entre em contato</h5>
 
-								<!-- Phone -->
+								<!-- Telefone -->
 								<p class="footer-phone"><a href="tel:+5511988910049">Telefone: +55 11 98891-0049</a></p>
 
 								<!-- Email -->
 								<p class="footer-email"><a href="mailto:dra.naimefarhat@gmail.com">dra.naimefarhat@gmail.com</a></p>
 
-								<!-- List -->
+								<!-- Lista -->
 								<ul class="foo-socials ico-20 text-center clearfix">
 									<!-- <li><a href="#" class="ico-t"><span class="flaticon-facebook"></span></a></li>	 -->
 									<li><a href="https://www.instagram.com/dra.dasarabia/" target="_blank" class="ico-youtube"><span class="flaticon-instagram"></span></a></li>
@@ -749,49 +740,48 @@
 						</div>
 
 
-						<!-- FOOTER CONTACTS -->
+						<!-- RODAPÉ DE CONTATOS -->
 						<div class="col-sm-6 col-lg-4">
 							<div class="footer-info">
 
-								<!-- Title -->
+								<!-- Título -->
 								<h5 class="h5-md">Horários de atendimento</h5>
 
-								<!-- Text -->
+								<!-- Texto -->
 								<p>Seg-Sex: <span>10:00 - 20:00</span></p>
 								<p>Sabado: <span>10:00 - 18:00</span></p>
 							</div>
 						</div>
 
 
-					</div>	  <!-- END FOOTER CONTENT -->
+					</div>	  <!-- FIM DO CONTEÚDO DO RODAPÉ -->
 
 
-					<hr>	<!-- FOOTER DIVIDER LINE -->
+					<hr>	<!-- LINHA DIVISÓRIA DE RODAPÉ -->
 
 
-					<!-- FOOTER COPYRIGHT -->
+					<!-- RODAPÉ COPYRIGHT -->
 					<div class="bottom-footer">
 						<div class="row">
 							<div class="col">
 								<div class="footer-copyright"><p>© 2025 Clínica das Árabia. All Rights Reserved</p></div>
 							</div>
-						</div>  <!-- End row -->
-					</div>	<!-- BOTTOM FOOTER -->
+						</div>  <!-- Linha final -->
+					</div>	<!-- RODAPÉ INFERIOR -->
 
 
-				</div>	   <!-- End container -->
-			</footer>	<!-- END FOOTER-3 -->
-
-
-
-
-		</div>	<!-- END PAGE CONTENT -->
+				</div>	   <!-- Fim do contêiner -->
+			</footer>	<!-- FIM DO RODAPÉ-3 -->
 
 
 
 
-		<!-- EXTERNAL SCRIPTS
-		============================================= -->
+		</div>	<!-- CONTEÚDO DA PÁGINA FINAL -->
+
+
+
+
+		<!-- SCRIPTS EXTERNOS -->
 		<script src="{%static 'js/jquery-3.7.0.min.js' %}"></script>
 		<script src="{%static 'js/bootstrap.min.js' %}"></script>
 		<script src="{%static 'js/modernizr.custom.js' %}"></script>
@@ -807,7 +797,7 @@
 		<script src="{%static 'js/lunar.js' %}"></script>
 		<script src="{%static 'js/wow.js' %}"></script>
 
-		<!-- Custom Script -->
+		<!-- Script personalizado -->
 		<script src="{%static 'js/custom.js' %}"></script>
 
 		<script>

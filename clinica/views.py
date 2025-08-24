@@ -14,11 +14,31 @@ from .forms import AgendamentoForm, ClienteForm
 
 
 def index(request):
-    return render(request, 'index.html')
+    nomes_tratamentos_destaque = [
+        'Harmonização Facial',
+        'Botox',
+        'Rinomodelação',
+        'Peeling',
+        'Microagulhamento',
+        'Fios de PDO',
+        'Bioestimulador de Colágeno'
+    ]
+
+    tratamentos_destaque = list(Tratamento.objects.filter(nome_tratamento__in=nomes_tratamentos_destaque))
+
+    meio = len(tratamentos_destaque) // 2
+    col1 = tratamentos_destaque[:meio]
+    col2 = tratamentos_destaque[meio:]
+
+    return render(request, 'index.html', {
+        'coluna1': col1,
+        'coluna2': col2,
+    })
 
 
 def tratamento(request):
-    return render(request, 'tratamentos.html')
+    tratamentos = Tratamento.objects.all()  # Busca todos os tratamentos
+    return render(request, 'tratamentos.html', {'tratamentos': tratamentos})
 
 
 def criar_agendamento(cliente_form, agendamento_form):
