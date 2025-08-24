@@ -1,120 +1,158 @@
-from .models import Agendamento, Cliente, Tratamento, TipoAgendamento
-from django.views.decorators.http import require_POST
-from .forms import AgendamentoForm, ClienteForm
 from django.shortcuts import render, redirect
-from django.middleware.csrf import get_token
 from django.http import JsonResponse
 from django.contrib import messages
+from django.db.models import Sum
 from django.utils import timezone
+from datetime import datetime as dt, timedelta
 import urllib.parse
-import datetime
-import json
+
+from .models import (
+    Agendamento, Cliente, Tratamento,
+    Receita, Despesa, Caixa, Produto, ConsumoProduto
+)
+from .forms import AgendamentoForm, ClienteForm
 
 
 def index(request):
     return render(request, 'index.html')
 
+
 def tratamento(request):
     return render(request, 'tratamentos.html')
 
+
+def criar_agendamento(cliente_form, agendamento_form):
+    """Cria agendamento, valida estoque e gera link WhatsApp"""
+    cliente = cliente_form.save()
+    data_hora = agendamento_form.cleaned_data['data_hora']
+    tratamento = agendamento_form.cleaned_data['tratamento']
+    tipo_agendamento = agendamento_form.cleaned_data['tipo_agendamento']
+
+    # Criar agendamento (sem ainda mexer no estoque)
+    agendamento_obj = Agendamento.objects.create(
+        cliente=cliente,
+        tratamento=tratamento,
+        data=data_hora.date(),
+        hora=data_hora.time(),
+        tipo_agendamento=tipo_agendamento,
+        status='PENDENTE'
+    )
+
+    # Mensagem automática do WhatsApp
+    nome_tratamento = agendamento_obj.tratamento.nome_tratamento
+    mensagem = (
+        f"Prezado(a) {cliente.nome},\n"
+        f"Agradecemos pelo seu contato. Seguem os detalhes do seu agendamento:\n"
+        f"Nome: {cliente.nome}\n"
+        f"Telefone: {cliente.telefone}\n"
+        f"Tratamento: {nome_tratamento}\n"
+        f"Data: {agendamento_obj.data.strftime('%d/%m/%Y')}\n"
+        f"Hora: {agendamento_obj.hora.strftime('%H:%M')}\n"
+        f"Tipo: {agendamento_obj.tipo_agendamento}\n\n"
+        f"Por favor, aguardar o retorno da confirmação do agendamento\n"
+        f"Atenciosamente,\n"
+        f"Dra. Naime Farhat - Clínica das Árabia"
+    )
+    mensagem_codificada = urllib.parse.quote(mensagem)
+    link_whatsapp = f"https://wa.me/5511988910049?text={mensagem_codificada}"
+    return agendamento_obj, link_whatsapp
+
+
 def agendamento(request):
     if request.method == 'POST':
-        # Se a requisição é AJAX, processamos como uma API
-        if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+        cliente_form = ClienteForm(request.POST)
+        agendamento_form = AgendamentoForm(request.POST)
+
+        if cliente_form.is_valid() and agendamento_form.is_valid():
             try:
-                # O JavaScript envia formData, então processamos com os forms
-                cliente_form = ClienteForm(request.POST)
-                agendamento_form = AgendamentoForm(request.POST)
+                agendamento_obj, link_whatsapp = criar_agendamento(cliente_form, agendamento_form)
+                messages.success(request, "Agendamento criado com sucesso!")
 
-                if cliente_form.is_valid() and agendamento_form.is_valid():
-                    cliente = cliente_form.save()
-
-                    data_hora = agendamento_form.cleaned_data['data_hora']
-                    tratamento = agendamento_form.cleaned_data['tratamento']
-                    tipo_agendamento = agendamento_form.cleaned_data['tipo_agendamento']
-
-                    agendamento_obj = Agendamento.objects.create(
-                        cliente=cliente,
-                        tratamento=tratamento,
-                        data=data_hora.date(),
-                        hora=data_hora.time(),
-                        tipo_agendamento=tipo_agendamento,
-                    )
-
-                    nome_tratamento = agendamento_obj.tratamento.nome_tratamento
-                    mensagem = (
-                        f"Agendamento:\n"
-                        f"Nome: {cliente.nome}\n"
-                        f"Telefone: {cliente.telefone}\n"
-                        f"Tratamento: {nome_tratamento}\n"
-                        f"Data: {agendamento_obj.data.strftime('%d/%m/%Y')}\n"
-                        f"Hora: {agendamento_obj.hora.strftime('%H:%M')}\n"
-                        f"Tipo: {agendamento_obj.tipo_agendamento}"
-                    )
-                    mensagem_codificada = urllib.parse.quote(mensagem)
-                    link_whatsapp = f"https://wa.me/5511940709836?text={mensagem_codificada}"
-                    
+                if request.headers.get('x-requested-with') == 'XMLHttpRequest':
                     return JsonResponse({'status': 'success', 'whatsapp_url': link_whatsapp})
-
                 else:
-                    # Se houver erros, retorna um JSON com os erros
-                    errors = {}
-                    if cliente_form.errors:
-                        errors.update(cliente_form.errors)
-                    if agendamento_form.errors:
-                        errors.update(agendamento_form.errors)
-
-                    return JsonResponse({'status': 'error', 'errors': errors}, status=400)
+                    return redirect(link_whatsapp)
 
             except Exception as e:
-                return JsonResponse({'status': 'error', 'message': 'Ocorreu um erro inesperado.'}, status=500)
-
-        # Para requisições POST normais (não-AJAX)
+                messages.error(request, f"Erro ao salvar o agendamento: {e}")
+                if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+                    return JsonResponse({'status': 'error', 'message': str(e)}, status=500)
         else:
-            cliente_form = ClienteForm(request.POST)
-            agendamento_form = AgendamentoForm(request.POST)
-
-            if cliente_form.is_valid() and agendamento_form.is_valid():
-                try:
-                    cliente = cliente_form.save()
-                    data_hora = agendamento_form.cleaned_data['data_hora']
-                    tratamento = agendamento_form.cleaned_data['tratamento']
-                    tipo_agendamento = agendamento_form.cleaned_data['tipo_agendamento']
-                    
-                    agendamento_obj = Agendamento.objects.create(
-                        cliente=cliente,
-                        tratamento=tratamento,
-                        data=data_hora.date(),
-                        hora=data_hora.time(),
-                        tipo_agendamento=tipo_agendamento,
-                    )
-                    
-                    nome_tratamento = agendamento_obj.tratamento.nome_tratamento
-                    mensagem = (
-                        f"Agendamento:\n"
-                        f"Nome: {cliente.nome}\n"
-                        f"Telefone: {cliente.telefone}\n"
-                        f"Tratamento: {nome_tratamento}\n"
-                        f"Data: {agendamento_obj.data.strftime('%d/%m/%Y')}\n"
-                        f"Hora: {agendamento_obj.hora.strftime('%H:%M')}\n"
-                        f"Tipo: {agendamento_obj.tipo_agendamento}"
-                    )
-                    mensagem_codificada = urllib.parse.quote(mensagem)
-                    link_whatsapp = f"https://wa.me/5511940709836?text={mensagem_codificada}"
-                    
-                    return redirect(link_whatsapp)
-                except Exception as e:
-                    messages.error(request, f"Erro ao salvar o agendamento: {e}")
+            errors = {}
+            for form in [cliente_form, agendamento_form]:
+                if form.errors:
+                    errors.update(form.errors)
+            if request.headers.get('x-requested-with') == 'XMLHttpRequest':
+                return JsonResponse({'status': 'error', 'errors': errors}, status=400)
             else:
-                for form in [cliente_form, agendamento_form]:
-                    for field, errors in form.errors.items():
-                        for error in errors:
-                            messages.error(request, f"Erro no campo '{field}': {error}")
-                messages.error(request, "Por favor, corrija os erros no formulário.")
-    
+                for field, error_list in errors.items():
+                    for error in error_list:
+                        messages.error(request, f"Erro no campo '{field}': {error}")
     else:
         cliente_form = ClienteForm()
         agendamento_form = AgendamentoForm()
 
     context = {'cliente_form': cliente_form, 'agendamento_form': agendamento_form}
     return render(request, 'agendamento.html', context)
+
+
+def concluir_agendamento(request, agendamento_id):
+    """Quando um agendamento é concluído, desconta os produtos do estoque"""
+    try:
+        agendamento = Agendamento.objects.get(id=agendamento_id)
+
+        # Verifica todos os consumos vinculados a este agendamento
+        for consumo in agendamento.consumos.all():
+            if consumo.produto.quantidade_estoque < consumo.quantidade:
+                messages.error(
+                    request,
+                    f"Estoque insuficiente para o produto {consumo.produto.nome}"
+                )
+                return redirect("admin:clinica_agendamento_changelist")
+
+        # Desconta do estoque
+        for consumo in agendamento.consumos.all():
+            produto = consumo.produto
+            produto.quantidade_estoque -= consumo.quantidade
+            produto.save()
+
+        agendamento.status = "CONCLUIDO"
+        agendamento.save()
+
+        messages.success(request, "Agendamento concluído e estoque atualizado!")
+    except Agendamento.DoesNotExist:
+        messages.error(request, "Agendamento não encontrado.")
+    return redirect("admin:clinica_agendamento_changelist")
+
+
+def admin_agendamentos_json(request):
+    """Endpoint JSON para calendário do admin"""
+    agendamentos = Agendamento.objects.all()
+    eventos = []
+
+    for ag in agendamentos:
+        start = dt.combine(ag.data, ag.hora)
+        end = start + (ag.tratamento.duracao_timedelta if ag.tratamento else timedelta(hours=1))
+        eventos.append({
+            'title': f'{ag.cliente.nome} - {ag.tratamento.nome_tratamento}',
+            'start': start.isoformat(),
+            'end': end.isoformat(),
+            'extendedProps': {'tipo': ag.tipo_agendamento.upper()},
+            'color': '#f39c12' if ag.tipo_agendamento.upper() == 'AVALIACAO' else '#27ae60'
+        })
+
+    return JsonResponse(eventos, safe=False)
+
+
+def admin_index(request):
+    """Dashboard financeiro simples"""
+    despesas_em_aberto = Despesa.objects.filter(pago=False).aggregate(total=Sum('valor'))['total'] or 0
+    receitas = Receita.objects.filter(recebido=True).aggregate(total=Sum('valor'))['total'] or 0
+    caixa = receitas - despesas_em_aberto
+
+    context = {
+        'despesas_em_aberto': despesas_em_aberto,
+        'receitas': receitas,
+        'caixa': caixa,
+    }
+    return render(request, 'admin/index.html', context)

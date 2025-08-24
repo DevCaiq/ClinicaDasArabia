@@ -13,6 +13,7 @@ class ClienteForm(forms.ModelForm):
             'telefone': forms.TextInput(attrs={'class': 'form-control phone', 'placeholder': 'Telefone*', 'required': True}),
         }
 
+
 class AgendamentoForm(forms.ModelForm):
     data_hora = forms.DateTimeField(
         input_formats=['%d/%m/%Y %H:%M'],
@@ -67,3 +68,17 @@ class AgendamentoForm(forms.ModelForm):
             raise forms.ValidationError("Agendamento não permitido neste dia.")
 
         return data_hora
+
+    def clean(self):
+        cleaned_data = super().clean()
+        tratamento = cleaned_data.get('tratamento')
+        data_hora = cleaned_data.get('data_hora')
+        if tratamento and data_hora:
+            conflito = Agendamento.objects.filter(
+                tratamento=tratamento,
+                data=data_hora.date(),
+                hora=data_hora.time()
+            ).exists()
+            if conflito:
+                raise forms.ValidationError("Já existe um agendamento neste horário para este tratamento.")
+        return cleaned_data
