@@ -1,8 +1,9 @@
 from django.contrib.auth.models import AbstractUser
+from django.core.exceptions import ValidationError
+from django.db import models, transaction
 from django.utils import timezone
 from django.db.models import Sum
 from datetime import timedelta
-from django.db import models
 import calendar
 
 # =============================
@@ -88,7 +89,7 @@ class TipoGenero(models.TextChoices):
 class Cliente(models.Model):
     nome = models.CharField('Nome', max_length=200)
     dt_nascimento = models.DateField('Data de Nascimento', null=True, blank=True)
-    cpf = models.CharField('CPF', max_length=14, unique=True, null=True, blank=True)
+    cpf = models.CharField('CPF', max_length=14, unique=True, blank=True, null=False, default="")
     telefone = models.CharField('Telefone', max_length=14)
     email = models.EmailField('E-mail', max_length=200)
     sexo = models.CharField('Gênero', max_length=25, choices=TipoGenero.choices, null=True, blank=True)
@@ -123,48 +124,86 @@ class Agendamento(models.Model):
     ]
     status = models.CharField('Status', max_length=20, choices=STATUS_CHOICES, default='PENDENTE')
 
+    # novo campo persistido para marcar que já descontou estoque
+    estoque_descontado = models.BooleanField('Estoque descontado?', default=False, db_index=True)
+
     created_at = models.DateTimeField(auto_now_add=True, verbose_name='Criado em')
     updated_at = models.DateTimeField(auto_now=True, verbose_name='Atualizado em')
-
-    # Campo auxiliar para rastrear se estoque já foi descontado
-    _estoque_descontado = False
-
-    def __str__(self):
-        return f"{self.cliente.nome} - {self.tratamento.nome_tratamento} - {self.data} - {self.hora}"
 
     class Meta:
         ordering = ['-id']
         constraints = [
-            models.UniqueConstraint(fields=['cliente', 'data', 'hora'], name='unique_cliente_horario')
+            # Impede dois agendamentos para o mesmo cliente no mesmo horário
+            models.UniqueConstraint(
+                fields=['cliente', 'data', 'hora'],
+                name='unique_cliente_horario'
+            ),
+            # Impede que clientes diferentes marquem no mesmo horário
+            models.UniqueConstraint(
+                fields=['data', 'hora'],
+                name='unique_horario'
+            ),
         ]
 
-    def save(self, *args, **kwargs):
-        """Desconta produtos do estoque quando agendamento é concluído"""
-        try:
-            original = Agendamento.objects.get(pk=self.pk)
-            status_anterior = original.status
-        except Agendamento.DoesNotExist:
-            status_anterior = None
+    def __str__(self):
+        return f"{self.cliente.nome} - {self.tratamento.nome_tratamento} - {self.data} - {self.hora}"
 
-        super().save(*args, **kwargs)  # Salva primeiro para garantir ID
+    # REMOVA o override complexo de save() que fazia desconto. 
+    # (Se você tiver um save() como no código original, delete essa função.)
 
-        # Se mudou para concluído e ainda não descontou estoque
-        if self.status == 'CONCLUIDO' and status_anterior != 'CONCLUIDO' and not self._estoque_descontado:
-            for consumo in self.consumos.all():  # usa os produtos ligados ao agendamento
-                produto = consumo.produto
-                if produto.quantidade_estoque >= consumo.quantidade:
-                    produto.quantidade_estoque -= consumo.quantidade
-                    produto.save()
-                    # Cria movimentação de estoque
-                    from .models import MovimentacaoEstoque
-                    MovimentacaoEstoque.objects.create(
-                        produto=produto,
-                        tipo='SAIDA',
-                        quantidade=consumo.quantidade,
-                        motivo=f'Uso no agendamento {self.id} - {self.cliente.nome}'
-                    )
-            self._estoque_descontado = True
+    def descontar_estoque_e_concluir(self):
+        """
+        Valida estoque, cria MovimentacaoEstoque para cada consumo e marca agendamento como CONCLUIDO.
+        Lança ValidationError se estoque insuficiente. Usa transaction + select_for_update para segurança.
+        """
+        if self.estoque_descontado:
+            # já foi feito antes — nada a fazer
+            return
 
+        # carrega consumos e produtos relacionados
+        consumos = list(self.consumos.select_related('produto').all())
+        if not consumos:
+            # não há consumo: apenas marca o agendamento como concluído
+            self.status = 'CONCLUIDO'
+            self.estoque_descontado = True
+            self.save(update_fields=['status', 'estoque_descontado'])
+            return
+
+        # somar quantidades por produto (caso haja múltiplos consumos do mesmo produto)
+        necessidade_por_produto = {}
+        product_ids = set()
+        for c in consumos:
+            pid = c.produto.id
+            necessidade_por_produto[pid] = necessidade_por_produto.get(pid, 0) + c.quantidade
+            product_ids.add(pid)
+
+        # bloqueia os produtos e valida + cria movimentações atomically
+        with transaction.atomic():
+            produtos_bloqueados = Produto.objects.select_for_update().filter(id__in=product_ids)
+            produtos_map = {p.id: p for p in produtos_bloqueados}
+
+            # valida estoque agregado
+            for pid, qtd_necessaria in necessidade_por_produto.items():
+                produto = produtos_map.get(pid)
+                if produto is None:
+                    raise ValidationError(f"Produto id={pid} não encontrado.")
+                if produto.quantidade_estoque < qtd_necessaria:
+                    raise ValidationError(f"Estoque insuficiente para {produto.nome}: disponível {produto.quantidade_estoque}, necessário {qtd_necessaria}.")
+
+            # se passou, cria MovimentacaoEstoque para cada consumo — MovimentacaoEstoque.save()
+            # já aplica o atualizar_estoque porque MovimentacaoEstoque.save() chama produto.atualizar_estoque
+            for consumo in consumos:
+                MovimentacaoEstoque.objects.create(
+                    produto=produtos_map[consumo.produto.id],
+                    tipo='SAIDA',
+                    quantidade=consumo.quantidade,
+                    motivo=f'Uso no agendamento {self.id} - {self.cliente.nome}'
+                )
+
+            # marca concluído e sinaliza estoque descontado
+            self.status = 'CONCLUIDO'
+            self.estoque_descontado = True
+            self.save(update_fields=['status', 'estoque_descontado'])
 
 
 # =============================
@@ -300,10 +339,10 @@ class Produto(models.Model):
             self.quantidade_estoque += quantidade
         elif tipo == 'SAIDA':
             if quantidade > self.quantidade_estoque:
-                raise ValueError(f"Estoque insuficiente: {self.quantidade_estoque} disponível")
+                raise ValidationError(f"Estoque insuficiente: {self.quantidade_estoque} disponível")
             self.quantidade_estoque -= quantidade
         else:
-            raise ValueError("Tipo de movimentação inválido")
+            raise ValidationError("Tipo de movimentação inválido")
         self.save()
 
     def __str__(self):

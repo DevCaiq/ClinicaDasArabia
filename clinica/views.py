@@ -1,9 +1,15 @@
 from django.shortcuts import render, redirect
+from django.core.exceptions import ValidationError
+from django.db.models.functions import TruncDay, TruncWeek, TruncMonth, ExtractYear
+from datetime import datetime as dt, timedelta, date
+from django.db.models import Sum, Count, F
 from django.http import JsonResponse
 from django.contrib import messages
-from django.db.models import Sum
-from django.utils import timezone
-from datetime import datetime as dt, timedelta
+from dateutil.relativedelta import relativedelta
+import datetime
+from .models import *
+
+
 import urllib.parse
 
 from .models import (
@@ -117,29 +123,14 @@ def agendamento(request):
 
 
 def concluir_agendamento(request, agendamento_id):
-    """Quando um agendamento é concluído, desconta os produtos do estoque"""
+    """Quando um agendamento é concluído, desconta os produtos do estoque (usando método do modelo)."""
     try:
         agendamento = Agendamento.objects.get(id=agendamento_id)
-
-        # Verifica todos os consumos vinculados a este agendamento
-        for consumo in agendamento.consumos.all():
-            if consumo.produto.quantidade_estoque < consumo.quantidade:
-                messages.error(
-                    request,
-                    f"Estoque insuficiente para o produto {consumo.produto.nome}"
-                )
-                return redirect("admin:clinica_agendamento_changelist")
-
-        # Desconta do estoque
-        for consumo in agendamento.consumos.all():
-            produto = consumo.produto
-            produto.quantidade_estoque -= consumo.quantidade
-            produto.save()
-
-        agendamento.status = "CONCLUIDO"
-        agendamento.save()
-
-        messages.success(request, "Agendamento concluído e estoque atualizado!")
+        try:
+            agendamento.descontar_estoque_e_concluir()
+            messages.success(request, "Agendamento concluído e estoque atualizado!")
+        except ValidationError as e:
+            messages.error(request, str(e))
     except Agendamento.DoesNotExist:
         messages.error(request, "Agendamento não encontrado.")
     return redirect("admin:clinica_agendamento_changelist")
@@ -176,3 +167,192 @@ def admin_index(request):
         'caixa': caixa,
     }
     return render(request, 'admin/index.html', context)
+
+
+
+# ============================= #
+# GRAFICOS
+# ============================= #
+
+# AGENDAMENTOS
+def agendamentos_por_tratamento(request):
+    data = Agendamento.objects.values('tratamento__nome_tratamento') \
+        .annotate(count=Count('id')) \
+        .order_by('-count')
+    labels = [item['tratamento__nome_tratamento'] for item in data]
+    counts = [item['count'] for item in data]
+    return JsonResponse({'labels': labels, 'counts': counts})
+
+def agendamentos_por_periodo(request, periodo='dia'):
+    if periodo == 'dia':
+        trunc = TruncDay('data')
+    elif periodo == 'semana':
+        trunc = TruncWeek('data')
+    else:
+        trunc = TruncMonth('data')
+
+    data = Agendamento.objects.annotate(period=trunc) \
+        .values('period') \
+        .annotate(count=Count('id')) \
+        .order_by('period')
+    labels = [item['period'].strftime('%d/%m/%Y') for item in data]
+    counts = [item['count'] for item in data]
+    return JsonResponse({'labels': labels, 'counts': counts})
+
+def clientes_com_mais_agendamentos(request):
+    data = Agendamento.objects.values('cliente__nome') \
+        .annotate(count=Count('id')) \
+        .order_by('-count')[:10]
+    labels = [item['cliente__nome'] for item in data]
+    counts = [item['count'] for item in data]
+    return JsonResponse({'labels': labels, 'counts': counts})
+
+# FINANCEIRO
+def receitas_despesas_por_mes(request):
+    hoje = datetime.date.today()
+    meses = [hoje - datetime.timedelta(days=30*i) for i in range(5,-1,-1)]
+    labels = [m.strftime("%b/%Y") for m in meses]
+
+    receitas_data = [Receita.objects.filter(data_recebimento__month=m.month, data_recebimento__year=m.year)
+                     .aggregate(total=Sum('valor'))['total'] or 0 for m in meses]
+    despesas_data = [Despesa.objects.filter(data_vencimento__month=m.month, data_vencimento__year=m.year)
+                     .aggregate(total=Sum('valor'))['total'] or 0 for m in meses]
+
+    return JsonResponse({'labels': labels, 'receitas': receitas_data, 'despesas': despesas_data})
+
+def receita_acumulada_vs_despesa(request):
+    hoje = datetime.date.today()
+    meses = [hoje - datetime.timedelta(days=30*i) for i in range(5,-1,-1)]
+    labels = [m.strftime("%b/%Y") for m in meses]
+    receitas_acum = []
+    despesas_acum = []
+    r_total = 0
+    d_total = 0
+    for m in meses:
+        r = Receita.objects.filter(data_recebimento__month=m.month, data_recebimento__year=m.year)\
+            .aggregate(total=Sum('valor'))['total'] or 0
+        d = Despesa.objects.filter(data_vencimento__month=m.month, data_vencimento__year=m.year)\
+            .aggregate(total=Sum('valor'))['total'] or 0
+        r_total += r
+        d_total += d
+        receitas_acum.append(r_total)
+        despesas_acum.append(d_total)
+
+    return JsonResponse({'labels': labels, 'receitas': receitas_acum, 'despesas': despesas_acum})
+
+def despesas_por_categoria(request):
+    data = Despesa.objects.values('categoria__nome').annotate(total=Sum('valor'))
+    labels = [item['categoria__nome'] for item in data]
+    totals = [item['total'] for item in data]
+    return JsonResponse({'labels': labels, 'totals': totals})
+
+def receitas_por_tipo_pagamento(request):
+    data = Receita.objects.values('forma_pagamento').annotate(total=Sum('valor'))
+    labels = [item['forma_pagamento'] for item in data]
+    totals = [item['total'] for item in data]
+    return JsonResponse({'labels': labels, 'totals': totals})
+
+#ESTOQUE & PRODUTOS
+def movimentacao_estoque(request):
+    hoje = datetime.date.today()
+    meses = [hoje - datetime.timedelta(days=30*i) for i in range(5,-1,-1)]
+    labels = [m.strftime("%b/%Y") for m in meses]
+    entradas = []
+    saidas = []
+    for m in meses:
+        ent = MovimentacaoEstoque.objects.filter(tipo='entrada', data__month=m.month, data__year=m.year)\
+            .aggregate(total=Sum('quantidade'))['total'] or 0
+        sai = MovimentacaoEstoque.objects.filter(tipo='saida', data__month=m.month, data__year=m.year)\
+            .aggregate(total=Sum('quantidade'))['total'] or 0
+        entradas.append(ent)
+        saidas.append(sai)
+    return JsonResponse({'labels': labels, 'entradas': entradas, 'saidas': saidas})
+
+def produtos_estoque_baixo_json(request):
+    produtos = Produto.objects.filter(quantidade_estoque__lte=F('estoque_minimo')).values('nome','quantidade_estoque')
+    data = {
+        'labels':[p['nome'] for p in produtos],
+        'quantidades':[p['quantidade_estoque'] for p in produtos]
+    }
+    return JsonResponse(data)
+
+# ---------- Clientes ----------
+def clientes_por_idade_json(request):
+    hoje = date.today()
+    clientes = Cliente.objects.annotate(
+        idade=hoje.year - ExtractYear('dt_nascimento')  # corrigido para dt_nascimento
+    ).values('idade').annotate(count=Count('id')).order_by('idade')
+    
+    data = {
+        'labels': [c['idade'] for c in clientes],
+        'counts': [c['count'] for c in clientes]
+    }
+    return JsonResponse(data)
+
+def novos_clientes_mes_json(request):
+    hoje = date.today()
+    meses = [hoje - relativedelta(months=i) for i in range(11, -1, -1)]
+    labels = [m.strftime("%b/%Y") for m in meses]
+
+    counts = [
+        Cliente.objects.filter(created_at__year=m.year, created_at__month=m.month).count()
+        for m in meses
+    ]
+
+    return JsonResponse({'labels': labels, 'counts': counts})
+
+def top_tratamentos_por_cliente_json(request):
+    agendamentos = Agendamento.objects.values('tratamento__nome_tratamento') \
+                                      .annotate(count=Count('id')) \
+                                      .order_by('-count')[:10]
+    data = {
+        'labels': [a['tratamento__nome_tratamento'] for a in agendamentos],
+        'counts': [a['count'] for a in agendamentos]
+    }
+    return JsonResponse(data)
+
+# ---------- Indicadores combinados ----------
+def agendamentos_trend_json(request):
+    hoje = date.today()
+    meses = [hoje - timedelta(days=30*i) for i in range(11,-1,-1)]
+    labels = [m.strftime("%b/%Y") for m in meses]
+    counts = [Agendamento.objects.filter(data__year=m.year, data__month=m.month).count() for m in meses]
+    return JsonResponse({'labels': labels, 'counts': counts})
+
+def receitas_vs_a_receber_json(request):
+    hoje = date.today()
+    meses = [hoje - timedelta(days=30*i) for i in range(11,-1,-1)]
+    labels = [m.strftime("%b/%Y") for m in meses]
+    receitas = [Receita.objects.filter(data_recebimento__year=m.year, data_recebimento__month=m.month, recebido=True).aggregate(total=Sum('valor'))['total'] or 0 for m in meses]
+    a_receber = [Receita.objects.filter(data_recebimento__year=m.year, data_recebimento__month=m.month, recebido=False).aggregate(total=Sum('valor'))['total'] or 0 for m in meses]
+    return JsonResponse({'labels': labels, 'recebidas': receitas, 'a_receber': a_receber})
+
+def saldo_caixa_json(request):
+    hoje = date.today()
+    meses = [hoje - timedelta(days=30*i) for i in range(11,-1,-1)]
+    labels = [m.strftime("%b/%Y") for m in meses]
+    saldos = []
+    for m in meses:
+        receitas = Receita.objects.filter(data_recebimento__year=m.year, data_recebimento__month=m.month, recebido=True).aggregate(total=Sum('valor'))['total'] or 0
+        despesas = Despesa.objects.filter(data_vencimento__year=m.year, data_vencimento__month=m.month, pago=True).aggregate(total=Sum('valor'))['total'] or 0
+        saldos.append(receitas - despesas)
+    return JsonResponse({'labels': labels, 'saldos': saldos})
+
+def produtos_criticos_json(request):
+    produtos = Produto.objects.filter(
+        quantidade_estoque__lte=F('estoque_minimo')
+    ).values('nome', 'quantidade_estoque')[:10]  # top 10
+    data = {
+        'labels':[p['nome'] for p in produtos],
+        'counts':[p['quantidade_estoque'] for p in produtos]
+    }
+    return JsonResponse(data)
+
+def taxa_cancelamento_json(request):
+    total = Agendamento.objects.count()
+    cancelados = Agendamento.objects.filter(status='cancelado').count()
+    data = {
+        'labels':['Cancelados','Ativos'],
+        'percentuais':[cancelados, total-cancelados]
+    }
+    return JsonResponse(data)

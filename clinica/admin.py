@@ -18,11 +18,9 @@ from .models import (
     ConsumoProduto,
     CategoriaDespesa,
 )
+from . import views as admin_views
 
 
-# ===========================
-# Custom AdminSite
-# ===========================
 # ===========================
 # Custom AdminSite
 # ===========================
@@ -35,6 +33,57 @@ class CustomAdminSite(AdminSite):
         urls = super().get_urls()
         custom_urls = [
             path('', self.admin_view(self.custom_index), name='index'),
+            # URLs JSON para os gráficos
+            path('dashboard/agendamentos-por-tratamento-json/', 
+                 self.admin_view(admin_views.agendamentos_por_tratamento), name='agendamentos_por_tratamento_json'),
+
+            path('dashboard/agendamentos-por-periodo-json/', 
+                 self.admin_view(admin_views.agendamentos_por_periodo), name='agendamentos_por_periodo_json'),
+
+            path('dashboard/clientes-mais-agendamentos-json/', 
+                 self.admin_view(admin_views.clientes_com_mais_agendamentos), name='clientes_mais_agendamentos_json'),
+
+            path('dashboard/receitas-despesas-por-mes-json/', 
+                 self.admin_view(admin_views.receitas_despesas_por_mes), name='receitas_despesas_por_mes_json'),
+
+            path('dashboard/receita-acumulada-vs-despesa-json/', 
+                 self.admin_view(admin_views.receita_acumulada_vs_despesa), name='receita_acumulada_vs_despesa_json'),
+
+            path('dashboard/despesas-por-categoria-json/', 
+                 self.admin_view(admin_views.despesas_por_categoria), name='despesas_por_categoria_json'),
+
+            path('dashboard/receitas-por-tipo-pagamento-json/', 
+                 self.admin_view(admin_views.receitas_por_tipo_pagamento), name='receitas_por_tipo_pagamento_json'),
+
+            path('dashboard/movimentacao-estoque-json/', 
+                 self.admin_view(admin_views.movimentacao_estoque), name='movimentacao_estoque_json'),
+
+            path('dashboard/produtos-estoque-baixo-json/',
+                  self.admin_view(admin_views.produtos_estoque_baixo_json), name='produtos_estoque_baixo_json'),
+
+            path('dashboard/clientes-por-idade-json/', 
+                 self.admin_view(admin_views.clientes_por_idade_json), name='clientes_por_idade_json'),
+
+            path('dashboard/novos-clientes-mes-json/', 
+                 self.admin_view(admin_views.novos_clientes_mes_json), name='novos_clientes_mes_json'),
+
+            path('dashboard/top-tratamentos-por-cliente-json/', 
+                 self.admin_view(admin_views.top_tratamentos_por_cliente_json), name='top_tratamentos_por_cliente_json'),
+
+            path('dashboard/agendamentos-trend-json/', 
+                 self.admin_view(admin_views.agendamentos_trend_json), name='agendamentos_trend_json'),
+
+            path('dashboard/receitas-vs-a-receber-json/', 
+                 self.admin_view(admin_views.receitas_vs_a_receber_json), name='receitas_vs_a_receber_json'),
+
+            path('dashboard/saldo-caixa-json/', 
+                 self.admin_view(admin_views.saldo_caixa_json), name='saldo_caixa_json'),
+            
+            path('dashboard/produtos-criticos-json/', 
+                 self.admin_view(admin_views.produtos_criticos_json), name='produtos_criticos_json'),
+
+            path('dashboard/taxa-cancelamento-json/', 
+                 self.admin_view(admin_views.taxa_cancelamento_json), name='taxa_cancelamento_json'),
         ]
         return custom_urls + urls
 

@@ -16,8 +16,8 @@
     color: #fff !important;
 }
 
-/* Títulos e textos */
-body, h1, h2, h3, h4, h5, h6, .brand-text, .nav-link, .content-header h1 {
+/* Títulos e textos — evitar aplicar ao body para não forçar widgets como date/timepickers */
+h1, h2, h3, h4, h5, h6, .brand-text, .content-header h1 {
     color: #fff !important;
 }
 
@@ -72,3 +72,188 @@ a, .nav-link, .nav-icon {
     color: #bd686b !important;
 }
 
+/* ---------------------------
+   WIDGET: CALENDÁRIO (datepicker)
+   --------------------------- */
+
+/* Caixa principal do calendário */
+.calendarbox {
+    background-color: #bd686b !important; /* fundo rosa */
+    border: 1px solid #fff !important;
+    color: #fff !important;
+}
+
+/* Cabeçalho do calendário (mês/ano e navegação) */
+.calendar caption, 
+.calendarbox h2 {
+    background-color: #bd686b !important;
+    color: #fff !important;
+    font-weight: bold !important;
+    padding: 6px;
+}
+
+/* Dias da semana */
+.calendar th {
+    background-color: #bd686b !important;
+    color: #fff !important;
+    padding: 6px;
+    border: none !important;
+}
+
+/* Dias normais */
+.calendar td, 
+.calendar td a {
+    background-color: #fff !important; /* mantém branco */
+    color: #bd686b !important;
+    border: 1px solid #bd686b !important;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+}
+
+/* Hover no dia */
+.calendar td:hover, 
+.calendar td a:hover {
+    background-color: #f2b6b8 !important; /* rosa claro no hover */
+    color: #fff !important;
+}
+
+/* Dia atual (Hoje) */
+.calendar td.today, 
+.calendar td.today a {
+    background-color: #bd686b !important;
+    color: #fff !important;
+    font-weight: bold;
+    border-radius: 50%;
+}
+
+/* Botão Cancelar */
+.calendarbox .calendar-cancel {
+    background-color: #fff !important;
+    color: #bd686b !important;
+    border: 1px solid #bd686b !important;
+    border-radius: 4px;
+    padding: 5px 10px;
+    margin-top: 8px;
+    cursor: pointer;
+}
+
+.calendarbox .calendar-cancel:hover {
+    background-color: #bd686b !important;
+    color: #fff !important;
+}
+
+
+/* ---------------------------
+   WIDGET: RELÓGIO / TIMEPICKER
+   --------------------------- */
+
+/* Caixa principal do relógio */
+.clockbox,
+.ui-timepicker-wrapper,
+.ui-timepicker-list,
+.bootstrap-timepicker-widget,
+.timepicker-popover {
+    background-color: #bd686b !important; /* fundo rosinha */
+    border: 1px solid #fff !important;
+    color: #fff !important;
+    padding: 8px;
+    border-radius: 6px;
+}
+
+/* Lista de horários - container */
+.timelist,
+.ui-timepicker-list,
+.bootstrap-timepicker-widget ul {
+    background-color: transparent !important;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+/* Cada horário: fundo branco, número rosa */
+.timelist li,
+.timelist li a,
+.ui-timepicker-list li,
+.ui-timepicker-list li a,
+.bootstrap-timepicker-widget li,
+.bootstrap-timepicker-widget li a {
+    background-color: #fff !important; /* fundo branco */
+    color: #bd686b !important;         /* número em rosa */
+    border: 1px solid #bd686b !important;
+    padding: 6px !important;
+    margin: 4px 0;
+    border-radius: 4px;
+    text-align: center;
+    display: block;
+    cursor: pointer;
+    transition: all 0.15s ease-in-out;
+}
+
+/* Garantir que anchors dentro das lis herdem a cor correta */
+.timelist li a,
+.ui-timepicker-list li a,
+.bootstrap-timepicker-widget li a {
+    color: inherit !important;
+    text-decoration: none !important;
+}
+
+/* Hover do horário: fundo rosinha claro -> número branco */
+.timelist li:hover,
+.ui-timepicker-list li:hover,
+.bootstrap-timepicker-widget li:hover {
+    background-color: #f2b6b8 !important; /* rosa claro no hover */
+    color: #fff !important;                /* número branco quando fundo rosa */
+}
+
+/* Horário selecionado: fundo rosa forte -> número branco */
+.timelist li.selected,
+.ui-timepicker-list li.ui-timepicker-selected,
+.bootstrap-timepicker-widget li.selected {
+    background-color: #bd686b !important;
+    color: #fff !important;
+    font-weight: bold;
+}
+
+/* Caso algum JS aplique classes diferentes */
+.ui-timepicker-entry.selected,
+.ui-timepicker-entry.ui-timepicker-selected {
+    background-color: #bd686b !important;
+    color: #fff !important;
+}
+
+/* Botão de cancelar do relógio */
+.clockbox .cancel,
+.ui-timepicker-close,
+.bootstrap-timepicker-widget .close {
+    background-color: #fff !important;
+    color: #bd686b !important;
+    border: 1px solid #bd686b !important;
+    border-radius: 4px;
+    padding: 5px 10px;
+    margin-top: 8px;
+    cursor: pointer;
+    display: inline-block;
+    text-align: center;
+}
+
+.clockbox .cancel:hover,
+.ui-timepicker-close:hover,
+.bootstrap-timepicker-widget .close:hover {
+    background-color: #bd686b !important;
+    color: #fff !important;
+}
+
+/* ---------------------------
+   Segurança extra: prioridade para widgets
+   --------------------------- */
+/* Se por algum motivo ainda houver uma regra global forçando texto branco,
+   estas regras específicas reinstauram as cores corretas nos widgets */
+.calendar td, .calendar td a, .timelist li, .timelist li a,
+.ui-timepicker-list li, .ui-timepicker-list li a {
+    color: #bd686b !important;
+}
+.calendar td:hover, .calendar td.selected, .timelist li.selected,
+.timelist li:hover {
+    color: #fff !important;
+}

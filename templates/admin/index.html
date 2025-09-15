@@ -109,7 +109,86 @@
     </div>
 
     <div id="calendar"></div>
+    <br>
+    <!-- Agendamento -->
+    <h3 class="text-center">Agendamentos</h3>
+    <div class="row">
+        <div class="col-md-4 ">
+            <canvas id="agendamentosPorTratamento"></canvas>
+        </div>
+        <div class="col-md-4 ">
+            <canvas id="agendamentosPorPeriodo"></canvas>
+        </div>
+        <div class="col-md-4 ">
+            <canvas id="clientesMaisAgendamentos"></canvas>
+        </div>
+    </div>    
+    <br>
+    <!-- Financeiro -->
+    <h3 class="text-center">Financeiro</h3>
+    <div class="row">
+        <div class="col-md-3 ">
+            <canvas id="receitasDespesas"></canvas>
+        </div>
+        <div class="col-md-3 ">
+            <canvas id="receitaAcumDespesa"></canvas>
+        </div>
+        <div class="col-md-3 ">
+            <canvas id="receitasPorTipoPagamento"></canvas>
+        </div>
+        <div class="col-md-2 ">
+            <canvas id="despesasPorCategoria"></canvas>
+        </div>
+    </div>        
+    <br>
+    <!-- Estoque -->
+    <h3 class="text-center">Estoque</h3>
+    <div class="row justify-content-center">
+        <div class="col-md-4">
+            <canvas id="movimentacaoEstoque"></canvas>
+        </div>
+        <div class="col-md-4">
+            <canvas id="produtosEstoqueBaixo"></canvas>
+        </div>
+    </div>
+
+    <!-- Clientes -->
+    <h3 class="text-center">Clientes</h3>
+    <div class="row">
+        <div class="col-md-4">
+            <canvas id="clientesPorIdade"></canvas>
+        </div>
+        <div class="col-md-4">
+            <canvas id="novosClientesMes"></canvas>
+        </div>
+        <div class="col-md-4">
+            <canvas id="topTratamentosPorCliente"></canvas>
+        </div>
+    </div>
+    <br>
+    <!-- Analytics -->
+    <h3 class="text-center">Analytics</h3>
+    <div class="row">
+        <div class="col-md-4">
+            <canvas id="agendamentosTrend"></canvas>
+        </div>
+        <div class="col-md-4">
+            <canvas id="receitasVsAReceber"></canvas>
+        </div>
+        <div class="col-md-4">
+            <canvas id="saldoCaixaChart"></canvas>
+        </div>
+        <div class="col-md-4">
+            <canvas id="produtosCriticosChart"></canvas>
+        </div>
+        <div class="col-md-2">
+            <canvas id="taxaCancelamentoChart"></canvas>
+        </div>
+    </div>   
 </div>
+
+
+
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
@@ -148,4 +227,432 @@ document.addEventListener('DOMContentLoaded', function() {
     calendar.render();
 });
 </script>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+function renderChart(id, type, data, options={}) {
+    const ctx = document.getElementById(id).getContext('2d');
+    new Chart(ctx, { type, data, options });
+}
+
+const palette = {
+    verde: 'rgba(39,174,96,0.7)',
+    verdeBorder: 'rgba(39,174,96,1)',
+    azul: 'rgba(52,152,219,0.2)',
+    azulBorder: 'rgba(52,152,219,1)',
+    roxo: 'rgba(155,89,182,0.7)',
+    roxoBorder: 'rgba(155,89,182,1)',
+    laranja: 'rgba(243,156,18,0.7)',
+    vermelho: 'rgba(231,76,60,0.7)',
+    vermelhoBorder: 'rgba(231,76,60,1)',
+    amarelo: 'rgba(241,196,15,0.7)',
+    cinzaTexto: '#333',
+    grid: '#f5e6e6',
+    fundo: '#fff8f7'
+};
+
+// -----------------------------
+// Agendamentos por Tratamento
+// -----------------------------
+fetch('/admin/dashboard/agendamentos-por-tratamento-json/')
+.then(r=>r.json())
+.then(d=>{
+    renderChart('agendamentosPorTratamento','bar',{
+        labels: d.labels,
+        datasets:[{
+            label:'Agendamentos',
+            data:d.counts,
+            backgroundColor: palette.verde,
+            borderColor: palette.verdeBorder,
+            borderWidth: 1
+        }]
+    },{
+        responsive:true,
+        plugins:{legend:{position:'top', labels:{color: palette.cinzaTexto}}},
+        scales:{
+            x:{grid:{color: palette.grid}, ticks:{color: palette.cinzaTexto}},
+            y:{grid:{color: palette.grid}, ticks:{color: palette.cinzaTexto}}
+        }
+    });
+});
+
+// -----------------------------
+// Agendamentos por Período (Linha)
+// -----------------------------
+fetch('/admin/dashboard/agendamentos-por-periodo-json/')
+.then(r=>r.json())
+.then(d=>{
+    renderChart('agendamentosPorPeriodo','line',{
+        labels:d.labels,
+        datasets:[{
+            label:'Agendamentos',
+            data:d.counts,
+            borderColor: palette.azulBorder,
+            backgroundColor: palette.azul,
+            fill:true,
+            tension:0.4
+        }]
+    },{
+        responsive:true,
+        plugins:{legend:{position:'top', labels:{color: palette.cinzaTexto}}},
+        scales:{
+            x:{grid:{color: palette.grid}, ticks:{color: palette.cinzaTexto}},
+            y:{grid:{color: palette.grid}, ticks:{color: palette.cinzaTexto}}
+        }
+    });
+});
+
+// -----------------------------
+// Clientes com mais Agendamentos
+// -----------------------------
+fetch('/admin/dashboard/clientes-mais-agendamentos-json/')
+.then(r=>r.json())
+.then(d=>{
+    renderChart('clientesMaisAgendamentos','bar',{
+        labels:d.labels,
+        datasets:[{
+            label:'Agendamentos',
+            data:d.counts,
+            backgroundColor: palette.roxo,
+            borderColor: palette.roxoBorder,
+            borderWidth: 1
+        }]
+    },{
+        responsive:true,
+        plugins:{legend:{position:'top', labels:{color: palette.cinzaTexto}}},
+        scales:{
+            x:{grid:{color: palette.grid}, ticks:{color: palette.cinzaTexto}},
+            y:{grid:{color: palette.grid}, ticks:{color: palette.cinzaTexto}}
+        }
+    });
+});
+
+// -----------------------------
+// Receitas e Despesas por Mês (Barras Empilhadas)
+// -----------------------------
+fetch('/admin/dashboard/receitas-despesas-por-mes-json/')
+.then(r=>r.json())
+.then(d=>{
+    renderChart('receitasDespesas','bar',{
+        labels:d.labels,
+        datasets:[
+            {label:'Receitas', data:d.receitas, backgroundColor: palette.verde},
+            {label:'Despesas', data:d.despesas, backgroundColor: palette.vermelho}
+        ]
+    },{
+        responsive:true,
+        plugins:{legend:{position:'top', labels:{color: palette.cinzaTexto}}},
+        scales:{
+            x:{stacked:true, grid:{color: palette.grid}, ticks:{color: palette.cinzaTexto}},
+            y:{stacked:true, grid:{color: palette.grid}, ticks:{color: palette.cinzaTexto}}
+        }
+    });
+});
+
+// -----------------------------
+// Receita Acumulada vs Despesa (Linha)
+// -----------------------------
+fetch('/admin/dashboard/receita-acumulada-vs-despesa-json/')
+.then(r=>r.json())
+.then(d=>{
+    renderChart('receitaAcumDespesa','line',{
+        labels:d.labels,
+        datasets:[
+            {label:'Receita Acumulada', data:d.receitas, borderColor: palette.verdeBorder, fill:false, tension:0.4},
+            {label:'Despesa Acumulada', data:d.despesas, borderColor: palette.vermelhoBorder, fill:false, tension:0.4}
+        ]
+    },{
+        responsive:true,
+        plugins:{legend:{position:'top', labels:{color: palette.cinzaTexto}}},
+        scales:{
+            x:{grid:{color: palette.grid}, ticks:{color: palette.cinzaTexto}},
+            y:{grid:{color: palette.grid}, ticks:{color: palette.cinzaTexto}}
+        }
+    });
+});
+
+// -----------------------------
+// Despesas por Categoria (Pizza)
+// -----------------------------
+fetch('/admin/dashboard/despesas-por-categoria-json/')
+.then(r=>r.json())
+.then(d=>{
+    renderChart('despesasPorCategoria','pie',{
+        labels:d.labels,
+        datasets:[{
+            data:d.totals,
+            backgroundColor:[palette.vermelho, palette.amarelo, palette.azulBorder, palette.roxo, palette.verde]
+        }]
+    },{
+        responsive:true,
+        plugins:{legend:{position:'top', labels:{color: palette.cinzaTexto}}}
+    });
+});
+
+// -----------------------------
+// Receitas por Tipo de Pagamento (Barra Horizontal)
+// -----------------------------
+fetch('/admin/dashboard/receitas-por-tipo-pagamento-json/')
+.then(r=>r.json())
+.then(d=>{
+    renderChart('receitasPorTipoPagamento','bar',{
+        labels:d.labels,
+        datasets:[{
+            data:d.totals,
+            backgroundColor: palette.verde
+        }]
+    },{
+        indexAxis:'y',
+        responsive:true,
+        plugins:{legend:{labels:{color: palette.cinzaTexto}}},
+        scales:{
+            x:{grid:{color: palette.grid}, ticks:{color: palette.cinzaTexto}},
+            y:{grid:{color: palette.grid}, ticks:{color: palette.cinzaTexto}}
+        }
+    });
+});
+
+// -----------------------------
+// Movimentação de Estoque (Linha)
+// -----------------------------
+fetch('/admin/dashboard/movimentacao-estoque-json/')
+.then(r=>r.json())
+.then(d=>{
+    renderChart('movimentacaoEstoque','line',{
+        labels:d.labels,
+        datasets:[
+            {label:'Entradas', data:d.entradas, borderColor: palette.verdeBorder, fill:true, backgroundColor:'rgba(39,174,96,0.2)', tension:0.4},
+            {label:'Saídas', data:d.saidas, borderColor: palette.vermelhoBorder, fill:true, backgroundColor:'rgba(231,76,60,0.2)', tension:0.4}
+        ]
+    },{
+        responsive:true,
+        plugins:{legend:{position:'top', labels:{color: palette.cinzaTexto}}},
+        scales:{
+            x:{grid:{color: palette.grid}, ticks:{color: palette.cinzaTexto}},
+            y:{grid:{color: palette.grid}, ticks:{color: palette.cinzaTexto}}
+        }
+    });
+});
+
+fetch('/admin/dashboard/produtos-estoque-baixo-json/')
+.then(r=>r.json())
+.then(d=>{
+    renderChart('produtosEstoqueBaixo','bar',{
+        labels:d.labels,
+        datasets:[{
+            label:'Qtd em Estoque',
+            data:d.quantidades,
+            backgroundColor: palette.laranja,
+            borderColor: palette.laranja,
+            borderWidth: 1
+        }]
+    },{
+        responsive:true,
+        plugins:{legend:{labels:{color: palette.cinzaTexto}}},
+        scales:{
+            x:{grid:{color: palette.grid}, ticks:{color: palette.cinzaTexto}},
+            y:{grid:{color: palette.grid}, ticks:{color: palette.cinzaTexto}}
+        }
+    });
+});
+
+// -----------------------------
+// Clientes (Barras)
+// -----------------------------
+fetch('/admin/dashboard/clientes-por-idade-json/')
+.then(r=>r.json())
+.then(d=>{
+    renderChart('clientesPorIdade','bar',{
+        labels:d.labels,
+        datasets:[{
+            label:'Qtd de Clientes',
+            data:d.counts,
+            backgroundColor: palette.azul,
+            borderColor: palette.azulBorder,
+            borderWidth: 1
+        }]
+    },{
+        responsive:true,
+        plugins:{legend:{labels:{color: palette.cinzaTexto}}},
+        scales:{
+            x:{grid:{color: palette.grid}, ticks:{color: palette.cinzaTexto}},
+            y:{grid:{color: palette.grid}, ticks:{color: palette.cinzaTexto}}
+        }
+    });
+});
+
+fetch('/admin/dashboard/novos-clientes-mes-json/')
+.then(r=>r.json())
+.then(d=>{
+    renderChart('novosClientesMes','line',{
+        labels:d.labels,
+        datasets:[{
+            label:'Novos Clientes',
+            data:d.counts,
+            borderColor: palette.roxoBorder,
+            backgroundColor:'rgba(155,89,182,0.2)',
+            fill:true,
+            tension:0.4
+        }]
+    },{
+        responsive:true,
+        plugins:{legend:{labels:{color: palette.cinzaTexto}}},
+        scales:{
+            x:{grid:{color: palette.grid}, ticks:{color: palette.cinzaTexto}},
+            y:{grid:{color: palette.grid}, ticks:{color: palette.cinzaTexto}}
+        }
+    });
+});
+
+fetch('/admin/dashboard/top-tratamentos-por-cliente-json/')
+.then(r=>r.json())
+.then(d=>{
+    renderChart('topTratamentosPorCliente','bar',{
+        labels:d.labels,
+        datasets:[{
+            label:'Qtd de Agendamentos',
+            data:d.counts,
+            backgroundColor: palette.verde,
+            borderColor: palette.verdeBorder,
+            borderWidth: 1
+        }]
+    },{
+        indexAxis:'y',
+        responsive:true,
+        plugins:{legend:{labels:{color: palette.cinzaTexto}}},
+        scales:{
+            x:{grid:{color: palette.grid}, ticks:{color: palette.cinzaTexto}},
+            y:{grid:{color: palette.grid}, ticks:{color: palette.cinzaTexto}}
+        }
+    });
+});
+
+// -----------------------------
+// Top tratamentos por cliente (barras horizontais)
+// -----------------------------
+fetch('/admin/dashboard/top-tratamentos-por-cliente-json/')
+.then(r=>r.json())
+.then(d=>{
+    renderChart('topTratamentosCliente','bar',{
+        labels:d.labels,
+        datasets:[{
+            label:'Qtd de Agendamentos',
+            data:d.counts,
+            backgroundColor: palette.verde,
+            borderColor: palette.verdeBorder,
+            borderWidth: 1
+        }]
+    },{
+        indexAxis:'y',
+        responsive:true,
+        plugins:{legend:{labels:{color: palette.cinzaTexto}}},
+        scales:{
+            x:{grid:{color: palette.grid}, ticks:{color: palette.cinzaTexto}},
+            y:{grid:{color: palette.grid}, ticks:{color: palette.cinzaTexto}}
+        }
+    });
+});
+
+
+// -----------------------------
+// INDICADORES COMBINADOS
+// -----------------------------
+fetch('/admin/dashboard/agendamentos-trend-json/')
+.then(r=>r.json())
+.then(d=>{
+    renderChart('agendamentosTrend','line',{
+        labels:d.labels,
+        datasets:[{
+            label:'Agendamentos',
+            data:d.counts,
+            borderColor: palette.azulBorder,
+            backgroundColor:'rgba(52,152,219,0.2)',
+            fill:true,
+            tension:0.4
+        }]
+    },{
+        responsive:true,
+        plugins:{legend:{labels:{color: palette.cinzaTexto}}},
+        scales:{
+            x:{grid:{color: palette.grid}, ticks:{color: palette.cinzaTexto}},
+            y:{grid:{color: palette.grid}, ticks:{color: palette.cinzaTexto}}
+        }
+    });
+});
+
+fetch('/admin/dashboard/receitas-vs-a-receber-json/')
+.then(r=>r.json())
+.then(d=>{
+    renderChart('receitasVsAReceber','bar',{
+        labels:d.labels,
+        datasets:[
+            {label:'Recebidas', data:d.recebidas, backgroundColor: palette.verde},
+            {label:'A Receber', data:d.a_receber, backgroundColor: palette.amarelo}
+        ]
+    },{
+        responsive:true,
+        plugins:{legend:{labels:{color: palette.cinzaTexto}}},
+        scales:{
+            x:{stacked:true, grid:{color: palette.grid}, ticks:{color: palette.cinzaTexto}},
+            y:{stacked:true, grid:{color: palette.grid}, ticks:{color: palette.cinzaTexto}}
+        }
+    });
+});
+
+fetch('/admin/dashboard/saldo-caixa-json/')
+.then(r=>r.json())
+.then(d=>{
+    renderChart('saldoCaixaChart','bar',{
+        labels:d.labels,
+        datasets:[{
+            label:'Saldo de Caixa',
+            data:d.saldos,
+            backgroundColor: palette.verde,
+            borderColor: palette.verdeBorder,
+            borderWidth: 1
+        }]
+    },{
+        responsive:true,
+        plugins:{legend:{labels:{color: palette.cinzaTexto}}},
+        scales:{
+            x:{grid:{color: palette.grid}, ticks:{color: palette.cinzaTexto}},
+            y:{grid:{color: palette.grid}, ticks:{color: palette.cinzaTexto}}
+        }
+    });
+});
+
+fetch('/admin/dashboard/produtos-criticos-json/')
+.then(r=>r.json())
+.then(d=>{
+    renderChart('produtosCriticosChart','pie',{
+        labels:d.labels,
+        datasets:[{
+            data:d.counts,
+            backgroundColor:[palette.vermelho, palette.laranja, palette.amarelo, palette.verde]
+        }]
+    },{
+        responsive:true,
+        plugins:{legend:{position:'top', labels:{color: palette.cinzaTexto}}}
+    });
+});
+
+fetch('/admin/dashboard/taxa-cancelamento-json/')
+.then(r=>r.json())
+.then(d=>{
+    renderChart('taxaCancelamentoChart','pie',{
+        labels:d.labels,
+        datasets:[{
+            data:d.percentuais,
+            backgroundColor:[palette.vermelho, palette.verde]
+        }]
+    },{
+        responsive:true,
+        plugins:{legend:{position:'top', labels:{color: palette.cinzaTexto}}}
+    });
+});
+
+
+</script>
+
+
 {% endblock %}
