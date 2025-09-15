@@ -3,6 +3,7 @@ from pathlib import Path
 import os
 from django.contrib.messages import constants as messages
 from dotenv import load_dotenv
+import dj_database_url
 
 load_dotenv()
 
@@ -93,15 +94,23 @@ if not DEBUG:
     ).split(',')
 
     # Banco de dados de produção (Postgres) — valores via env
+    # DATABASES = {
+    #     'default': {
+    #         'ENGINE': 'django.db.backends.postgresql',
+    #         'NAME': os.environ.get('POSTGRES_DB'),
+    #         'USER': os.environ.get('POSTGRES_USER'),
+    #         'PASSWORD': os.environ.get('POSTGRES_PASSWORD'),
+    #         'HOST': os.environ.get('POSTGRES_HOST', 'localhost'),
+    #         'PORT': os.environ.get('POSTGRES_PORT', '5432'),
+    #     }
+    # }
+
     DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.postgresql',
-            'NAME': os.environ.get('POSTGRES_DB'),
-            'USER': os.environ.get('POSTGRES_USER'),
-            'PASSWORD': os.environ.get('POSTGRES_PASSWORD'),
-            'HOST': os.environ.get('POSTGRES_HOST', 'localhost'),
-            'PORT': os.environ.get('POSTGRES_PORT', '5432'),
-        }
+        'default': dj_database_url.config(
+            default=os.environ.get("DATABASE_URL"),
+            conn_max_age=600,
+            ssl_require=True
+        )
     }
 else:
     # Desenvolvimento - SQLite
@@ -132,7 +141,14 @@ STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 # WhiteNoise storage (atenção: CompressedManifest pode quebrar se faltar arquivos referenciados)
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+STORAGES = {
+    "staticfiles": {
+        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+    },
+    "default": {
+        "BACKEND": "django.core.files.storage.FileSystemStorage",
+    },
+}
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
