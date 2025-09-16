@@ -22,7 +22,7 @@ if not DEBUG and not SECRET_KEY:
 # Use variável de ambiente DJANGO_ALLOWED_HOSTS como 'dominio.com,www.dominio.com,127.0.0.1'
 ALLOWED_HOSTS = os.environ.get(
     'DJANGO_ALLOWED_HOSTS',
-    'clinicadasarabia.com.br,www.clinicadasarabia.com.br,localhost,127.0.0.1,72.60.8.166'
+    'clinicadasarabia.com.br,www.clinicadasarabia.com.br,localhost,127.0.0.1,72.60.8.166,clinicadasarabia.onrender.com'
 ).split(',')
 
 # ----- Installed apps -----
