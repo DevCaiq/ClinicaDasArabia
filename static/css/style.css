@@ -4021,7 +4021,6 @@ td.text-end {
 }
 
 .newsletter-wrapper.bg--img {
-  background: url(../images/newsletter.jpg);
   width: 100%;
   background-repeat: no-repeat;
   background-position: center center;
@@ -5376,17 +5375,7 @@ select:-webkit-autofill:focus {
   padding-top: 180px;
 }
 
-#about-page.inner-page-hero {
-  /* background-image: url(../images/about-page.jpg); */
-}
 
-/* ESTILO GERAL
-#booking-page.inner-page-hero,
-#pricing-page-1.inner-page-hero {
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-} */
 
 #booking-page.inner-page-hero {
   background-image: url(../images/slide-2.jpg);
@@ -5546,23 +5535,6 @@ select:-webkit-autofill:focus {
 
 #modal-2.modal .modal-content {
   overflow: hidden;
-}
-
-#modal-2.modal .bg-img {
-  background: url(../images/modal.jpg);
-  background-position: left center;
-}
-
-#modal-2.modal_barber .bg-img {
-  background: url(../images/modal_barber.jpg);
-}
-
-#modal-2.modal_hair .bg-img {
-  background: url(../images/modal_hair.jpg);
-}
-
-#modal-2.modal_nail .bg-img {
-  background: url(../images/modal_nail.jpg);
 }
 
 #modal-2 .modal-body-content {
