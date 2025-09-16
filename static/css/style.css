@@ -3805,27 +3805,6 @@ td.text-end {
   16. BANNER
   ========================================================================== */
 
-.banner-1-wrapper {
-  background-image: url(../images/banner-1.jpg);
-  padding: 90px 80px;
-}
-
-.banner-1-wrapper.banner-1-hair {
-  background-image: url(../images/banner-1-hair.jpg);
-}
-
-.banner-3 {
-  background-image: url(../images/banner-3.jpg);
-  padding-top: 90px;
-  padding-bottom: 90px;
-}
-
-.banner-4 {
-  background-image: url(../images/banner-4.jpg);
-  padding-top: 100px;
-  padding-bottom: 100px;
-}
-
 .banner-5-wrapper.bg--img,
 .banner-6-wrapper.bg--img {
   width: 100%;
@@ -3835,15 +3814,6 @@ td.text-end {
   background-attachment: scroll!important;
 }
 
-.banner-5-wrapper.bg--img.bg--black,
-.banner-6-wrapper.bg--img.bg--black {
-  background-image: url(../images/banner-bg-black.jpg);
-}
-
-.banner-5-wrapper.bg--img.bg--beige,
-.banner-6-wrapper.bg--img.bg--beige {
-  background-image: url(../images/banner-bg-beige.jpg);
-}
 
 .banner-5 .left-column,
 .banner-6 .left-column {
